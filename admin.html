@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire World Admin Panel</title>
+    <style>
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { 
+            background: linear-gradient(135deg, #fbcfe8 0%, #fed7aa 50%, #e9d5ff 100%); 
+            margin: 0; padding: 20px 10px; 
+            display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; flex-direction: column;
+        }
+
+        .admin-card { 
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(15px); 
+            padding: 25px 20px; border-radius: 28px; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); 
+            width: 100%; max-width: 400px; text-align: center; 
+            border: 1px solid rgba(255, 255, 255, 0.6); 
+        }
+
+        h2 { color: #1e293b; margin-top: 0; margin-bottom: 20px; font-size: 22px; }
+        
+        .form-group { 
+            background: rgba(255, 255, 255, 0.5); 
+            padding: 12px; border-radius: 16px; 
+            border: 1px solid #e2e8f0; margin-bottom: 14px; 
+            text-align: left;
+        }
+
+        label { display: block; font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 6px; }
+        
+        .input-row { display: flex; gap: 8px; }
+        
+        input { 
+            flex: 1; padding: 10px 12px; 
+            background: #f1f5f9; border: 1px solid #cbd5e1; 
+            border-radius: 10px; font-size: 13px; outline: none; color: #334155; 
+        }
+        input:focus { border-color: #a855f7; }
+
+        .single-save-btn { 
+            background: linear-gradient(135deg, #a855f7, #6366f1); 
+            color: white; border: none; padding: 10px 14px; 
+            border-radius: 10px; font-size: 12px; font-weight: bold; 
+            cursor: pointer; white-space: nowrap; transition: 0.2s; 
+        }
+        .single-save-btn:active { transform: scale(0.95); }
+
+        .msg { text-align: center; margin-top: 15px; font-size: 13px; color: #16a34a; font-weight: bold; min-height: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="admin-card">
+        <h2>🛠️ Fire World Admin</h2>
+
+        <div class="form-group">
+            <label>🔐 Access Key (पासवर्ड)</label>
+            <div class="input-row">
+                <input type="text" id="newKey" placeholder="जैसे: SURYA123">
+                <button class="single-save-btn" onclick="saveField('fireDkKey', 'newKey', 'Key सफलतापूर्वक बदल गई!')">Save Key</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>📱 OTP / Target Panel Link</label>
+            <div class="input-row">
+                <input type="text" id="newUrl" placeholder="पैनल का लिंक डालें">
+                <button class="single-save-btn" onclick="saveField('fireDkTargetUrl', 'newUrl', 'पैनल लिंक बदल गया!')">Save Panel</button>
+            </div>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid #cbd5e1; margin: 15px 0;">
+
+        <div class="form-group">
+            <label>📢 Telegram Channel 1 Link</label>
+            <div class="input-row">
+                <input type="text" id="ch1" placeholder="https://t.me/...">
+                <button class="single-save-btn" onclick="saveField('fireDkCh1', 'ch1', 'चैनल 1 अपडेट हो गया!')">Save Ch 1</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>📢 Telegram Channel 2 Link</label>
+            <div class="input-row">
+                <input type="text" id="ch2" placeholder="https://t.me/...">
+                <button class="single-save-btn" onclick="saveField('fireDkCh2', 'ch2', 'चैनल 2 अपडेट हो गया!')">Save Ch 2</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>📢 Telegram Channel 3 Link</label>
+            <div class="input-row">
+                <input type="text" id="ch3" placeholder="https://t.me/...">
+                <button class="single-save-btn" onclick="saveField('fireDkCh3', 'ch3', 'चैनल 3 अपडेट हो गया!')">Save Ch 3</button>
+            </div>
+        </div>
+
+        <div id="statusMsg" class="msg"></div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            document.getElementById('newKey').value = localStorage.getItem("fireDkKey") || "SURYA123";
+            document.getElementById('newUrl').value = localStorage.getItem("fireDkTargetUrl") || "https://worldoff.netlify.app/?s=aHR0cHM6Ly9qYW51LTM4ZTNjLWRlZmF1bHQtcnRkYi5maXJlYmFzZWlvLmNvbXx8fENob290IHBpa2k=";
+            document.getElementById('ch1').value = localStorage.getItem("fireDkCh1") || "https://t.me/suryaearningtip";
+            document.getElementById('ch2').value = localStorage.getItem("fireDkCh2") || "https://t.me/suryaearningtips";
+            document.getElementById('ch3').value = localStorage.getItem("fireDkCh3") || "https://t.me/Jafarearningtrick";
+        }
+
+        function saveField(storageKey, inputId, messageText) {
+            let val = document.getElementById(inputId).value.trim();
+            if(val !== "") {
+                localStorage.setItem(storageKey, val);
+                showNotification("✅ " + messageText);
+            } else {
+                alert("कृपया खाली बॉक्स न छोड़ें!");
+            }
+        }
+
+        function showNotification(text) {
+            let msg = document.getElementById('statusMsg');
+            msg.innerText = text;
+            setTimeout(() => {
+                msg.innerText = "";
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire World Bot</title>
+    <style>
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { 
+            background: linear-gradient(135deg, #fbcfe8 0%, #fed7aa 50%, #e9d5ff 100%); 
+            margin: 0; padding: 20px 10px; 
+            display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; flex-direction: column;
+        }
+
+        .toast-alert {
+            position: fixed; top: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid #fbcfe8;
+            padding: 10px 16px; border-radius: 16px;
+            display: flex; align-items: center; gap: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            z-index: 100;
+            opacity: 0; transform: translateY(-20px); pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        .toast-alert.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        .toast-icon { background: #fecdd3; color: #e11d48; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .toast-text { text-align: left; }
+        .toast-title { font-size: 13px; font-weight: bold; color: #be123c; margin: 0; }
+        .toast-sub { font-size: 11px; color: #64748b; margin: 0; }
+        .toast-close { background: #e0e7ff; color: #3730a3; border: none; width: 24px; height: 24px; border-radius: 50%; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left: 10px; }
+
+        .card { 
+            background: rgba(255, 255, 255, 0.75); 
+            backdrop-filter: blur(15px); 
+            padding: 30px 20px; border-radius: 28px; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); 
+            width: 100%; max-width: 360px; text-align: center; 
+            border: 1px solid rgba(255, 255, 255, 0.6); 
+        }
+
+        .hidden { display: none !important; }
+
+        .join-icon-box { font-size: 40px; margin-bottom: 5px; }
+        .join-title-text { font-size: 22px; font-weight: 800; color: #1e293b; margin: 0 0 8px 0; }
+        .join-sub-text { font-size: 13px; color: #64748b; margin-bottom: 25px; line-height: 1.4; }
+        .channel-btn-row { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 20px; }
+        .ch-num-btn { flex: 1; background: #dbeafe; color: #1e40af; border: none; padding: 12px; border-radius: 12px; font-weight: bold; font-size: 14px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 5px; transition: 0.2s; }
+        .ch-num-btn:active { transform: scale(0.95); }
+        .ive-joined-btn { background: linear-gradient(135deg, #a855f7, #6366f1); color: white; border: none; width: 100%; padding: 15px; border-radius: 16px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3); transition: 0.2s; }
+        .ive-joined-btn:active { transform: scale(0.97); }
+
+        .fire-icon { font-size: 38px; margin-bottom: 5px; }
+        .app-title { font-size: 22px; font-weight: 800; color: #1e293b; margin: 0 0 8px 0; }
+        .live-badge { display: inline-block; background: #dcfce7; color: #166534; font-size: 11px; padding: 4px 12px; border-radius: 20px; font-weight: bold; margin-bottom: 20px; }
+
+        .input-wrapper { position: relative; margin-bottom: 6px; }
+        .input-wrapper input { width: 100%; padding: 14px 45px 14px 16px; border: 1px solid #e0e7ff; border-radius: 14px; background: #f1f5f9; font-size: 14px; outline: none; color: #334155; }
+        .eye-btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #94a3b8; font-size: 18px; cursor: pointer; outline: none; }
+
+        .key-hint { font-size: 11px; color: #94a3b8; margin-bottom: 20px; text-align: left; padding-left: 4px; }
+
+        .cf-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px; margin-bottom: 20px; text-align: left; }
+        .cf-inner { background: #334155; color: white; padding: 12px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; }
+        .cf-left { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; }
+        .cf-check { background: #22c55e; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+        .cf-brand { font-size: 10px; color: #cbd5e1; text-align: right; }
+        .cf-status { font-size: 11px; color: #15803d; text-align: center; margin-top: 8px; font-weight: 600; }
+
+        .unlock-btn { background: linear-gradient(135deg, #fb923c, #f43f5e); color: white; border: none; width: 100%; padding: 15px; border-radius: 16px; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(251, 146, 60, 0.4); margin-bottom: 15px; }
+        .need-key-link { font-size: 13px; color: #8b5cf6; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; }
+    </style>
+</head>
+<body>
+
+    <div id="toast" class="toast-alert">
+        <div class="toast-icon">!</div>
+        <div class="toast-text">
+            <div class="toast-title">Join Required</div>
+            <div class="toast-sub" id="toastSubText">Not joined channel: 3</div>
+        </div>
+        <button class="toast-close" onclick="closeToast()">×</button>
+    </div>
+
+    <div id="joinCard" class="card">
+        <div class="join-icon-box">📢</div>
+        <h2 class="join-title-text">Join Required</h2>
+        <p class="join-sub-text">Please join all channels below to continue and access the panel.</p>
+        
+        <div class="channel-btn-row" id="chanButtonsContainer">
+        </div>
+
+        <button class="ive-joined-btn" onclick="verifyAgain()">I've Joined — Verify</button>
+    </div>
+
+    <div id="keyCard" class="card hidden">
+        <div class="fire-icon">🔥</div>
+        <h2 class="app-title">Fire World</h2>
+        <div class="live-badge">● LIVE SYSTEM</div>
+
+        <div class="input-wrapper">
+            <input type="password" id="accessKeyInput" placeholder="Enter access key">
+            <button class="eye-btn" onclick="togglePasswordView()" id="eyeBtnIcon">👁️‍🗨️</button>
+        </div>
+        <div class="key-hint">Enter Key must match your registered access key</div>
+
+        <div class="cf-box">
+            <div class="cf-inner">
+                <div class="cf-left">
+                    <div class="cf-check">✓</div>
+                    <span>Success!</span>
+                </div>
+                <div class="cf-brand">CLOUDFLARE<br><span style="font-size:8px; opacity:0.7;">Privacy • Help</span></div>
+            </div>
+            <div class="cf-status">Verification complete</div>
+        </div>
+
+        <button class="unlock-btn" onclick="submitKey()">Unlock Panel →</button>
+        
+        <div>
+            <a href="https://t.me/kingsearning99" target="_blank" class="need-key-link">✈️ Need Key?</a>
+        </div>
+    </div>
+
+    <script>
+        let clickedChans = new Set();
+
+        window.onload = function() {
+            let c1 = localStorage.getItem("fireDkCh1") || "https://t.me/suryaearningtip";
+            let c2 = localStorage.getItem("fireDkCh2") || "https://t.me/suryaearningtips";
+            let c3 = localStorage.getItem("fireDkCh3") || "https://t.me/Jafarearningtrick";
+
+            document.getElementById('chanButtonsContainer').innerHTML = `
+                <a href="${c1}" target="_blank" class="ch-num-btn" onclick="trackClick(1)">✈️ 1</a>
+                <a href="${c2}" target="_blank" class="ch-num-btn" onclick="trackClick(2)">✈️ 2</a>
+                <a href="${c3}" target="_blank" class="ch-num-btn" onclick="trackClick(3)">✈️ 3</a>
+            `;
+
+            if(sessionStorage.getItem("fireDkJoined") === "true") {
+                showKeyScreen();
+            }
+        }
+
+        function trackClick(num) {
+            clickedChans.add(num);
+        }
+
+        function verifyAgain() {
+            if(clickedChans.size >= 3) {
+                sessionStorage.setItem("fireDkJoined", "true");
+                showKeyScreen();
+            } else {
+                let missing = [];
+                if(!clickedChans.has(1)) missing.push(1);
+                if(!clickedChans.has(2)) missing.push(2);
+                if(!clickedChans.has(3)) missing.push(3);
+
+                showToast(`Not joined channel: ${missing.join(', ')}`);
+            }
+        }
+
+        function showKeyScreen() {
+            document.getElementById('joinCard').classList.add('hidden');
+            document.getElementById('keyCard').classList.remove('hidden');
+        }
+
+        function togglePasswordView() {
+            let pwdInput = document.getElementById('accessKeyInput');
+            let eyeBtn = document.getElementById('eyeBtnIcon');
+
+            if (pwdInput.type === "password") {
+                pwdInput.type = "text";
+                eyeBtn.innerText = "👁️"; 
+            } else {
+                pwdInput.type = "password";
+                eyeBtn.innerText = "👁️‍🗨️"; 
+            }
+        }
+
+        function showToast(msgText) {
+            let toast = document.getElementById('toast');
+            document.getElementById('toastSubText').innerText = msgText;
+            toast.classList.add('show');
+            setTimeout(() => {
+                closeToast();
+            }, 3500);
+        }
+
+        function closeToast() {
+            document.getElementById('toast').classList.remove('show');
+        }
+
+        function submitKey() {
+            let inputKey = document.getElementById('accessKeyInput').value.trim();
+            let adminSavedKey = localStorage.getItem("fireDkKey") || "SURYA123";
+
+            if(!inputKey) {
+                alert("Please enter your Access Key!");
+                return;
+            }
+
+            if(inputKey === adminSavedKey) {
+                let defaultTarget = "https://worldoff.netlify.app/?s=aHR0cHM6Ly9qYW51LTM4ZTNjLWRlZmF1bHQtcnRkYi5maXJlYmFzZWlvLmNvbXx8fENob290IHBpa2k=";
+                let targetUrl = localStorage.getItem("fireDkTargetUrl") || defaultTarget;
+                window.location.href = targetUrl;
+            } else {
+                alert("❌ Wrong Access Key!");
+            }
+        }
+    </script>
+</body>
+</html>
