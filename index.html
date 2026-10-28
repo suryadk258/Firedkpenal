@@ -128,12 +128,17 @@
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);
         }
-        .need-key-link {
-            font-size: 13px;
-            color: #4f46e5;
-            text-decoration: none;
-            font-weight: 700;
+        @keyframes bounceGlow {
+            0% { transform: translateY(0); color: #ff0000; }
+            50% { transform: translateY(-4px); color: #ff4d4d; text-shadow: 0 0 8px rgba(255,0,0,0.6); }
+            100% { transform: translateY(0); color: #ff0000; }
+        }
+        .animated-key-text {
             display: inline-block;
+            animation: bounceGlow 1.2s infinite ease-in-out;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
             margin-top: 15px;
         }
     </style>
@@ -163,10 +168,9 @@
         <button class="unlock-btn" onclick="submitKey()">Unlock Panel →</button>
 
         <div>
-            <a href="https://t.me/kingsearning99" target="_blank" class="need-key-link">🔑 Need Key?</a>
-        </div>
-        <div style="text-align: center; margin-top: 5px;">
-            <span style="font-size: 11px; color: #888;">Key ke liye click karein</span>
+            <a href="https://t.me/kingsearning99" target="_blank" class="animated-key-text">
+                🔑 Key ke liye yahan click karein
+            </a>
         </div>
     </div>
 
