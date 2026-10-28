@@ -29,13 +29,13 @@ def send_welcome(message):
     if check_all_channels(user_id):
         web_app = WebAppInfo(url=WEB_APP_URL)
         markup.add(InlineKeyboardButton("🚀 Open Panel", web_app=web_app))
-        bot.send_message(message.chat.id, "✅ **Welcome!** You have joined all required channels. Click below to open the panel:", parse_mode="Markdown", reply_markup=markup)
+        bot.send_message(message.chat.id, "✅ **Welcome!** आपने सभी चैनल ज्वाइन कर लिए हैं। नीचे दिए गए बटन से पैनल खोलें:", parse_mode="Markdown", reply_markup=markup)
     else:
         markup.add(InlineKeyboardButton("📢 Join Channel 1", url="https://t.me/suryaearningtip"))
         markup.add(InlineKeyboardButton("📢 Join Channel 2", url="https://t.me/suryaearningtips"))
         markup.add(InlineKeyboardButton("📢 Join Channel 3", url="https://t.me/Jafarearningtrick"))
         markup.add(InlineKeyboardButton("🔄 I've Joined - Check Again", callback_data="check_join"))
-        bot.send_message(message.chat.id, "❌ **Join Required!**\n\nPlease join all our channels below to access the panel.", parse_mode="Markdown", reply_markup=markup)
+        bot.send_message(message.chat.id, "❌ **Join Required!**\n\nपैनल खोलने के लिए पहले हमारे सभी चैनल्स को ज्वाइन करें:", parse_mode="Markdown", reply_markup=markup)
 
 @bot.callback_query_handler(func=lambda call: call.data == "check_join")
 def callback_query(call):
@@ -43,13 +43,13 @@ def callback_query(call):
     
     markup = InlineKeyboardMarkup()
     if check_all_channels(user_id):
-        bot.answer_callback_query(call.id, "✅ Verified successfully!")
+        bot.answer_callback_query(call.id, "✅ Verification Successful!")
         web_app = WebAppInfo(url=WEB_APP_URL)
         markup.add(InlineKeyboardButton("🚀 Open Panel", web_app=web_app))
         try:
-            bot.edit_message_text("✅ **Verification Successful!** Click below to open the panel:", chat_id=call.message.chat.id, message_id=call.message.message_id, parse_mode="Markdown", reply_markup=markup)
+            bot.edit_message_text("✅ **Verification Successful!** अब आप पैनल खोल सकते हैं:", chat_id=call.message.chat.id, message_id=call.message.message_id, parse_mode="Markdown", reply_markup=markup)
         except Exception:
-            bot.send_message(call.message.chat.id, "✅ **Verification Successful!** Click below to open the panel:", parse_mode="Markdown", reply_markup=markup)
+            bot.send_message(call.message.chat.id, "✅ **Verification Successful!** अब आप पैनल खोल सकते हैं:", parse_mode="Markdown", reply_markup=markup)
     else:
         bot.answer_callback_query(call.id, "❌ आपने अभी तक सभी चैनल ज्वाइन नहीं किए हैं!", show_alert=True)
         markup.add(InlineKeyboardButton("📢 Join Channel 1", url="https://t.me/suryaearningtip"))
@@ -57,7 +57,7 @@ def callback_query(call):
         markup.add(InlineKeyboardButton("📢 Join Channel 3", url="https://t.me/Jafarearningtrick"))
         markup.add(InlineKeyboardButton("🔄 I've Joined - Check Again", callback_data="check_join"))
         try:
-            bot.edit_message_text("❌ **Join Required!**\n\nआपने किसी चैनल को छोड़ (Unfollow) दिया है। कृपया दोबारा सभी चैनल ज्वाइन करें:", chat_id=call.message.chat.id, message_id=call.message.message_id, parse_mode="Markdown", reply_markup=markup)
+            bot.edit_message_text("❌ **Join Required!**\n\nलगता है आपने किसी चैनल को अनफॉलो कर दिया है। कृपया दोबारा सभी ज्वाइन करें:", chat_id=call.message.chat.id, message_id=call.message.message_id, parse_mode="Markdown", reply_markup=markup)
         except Exception:
             pass
 
