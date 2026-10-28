@@ -190,7 +190,7 @@
 
         function submitKey() {
             let inputKey = document.getElementById('accessKeyInput').value.trim();
-            let adminSavedKey = localStorage.getItem('fireDkKey') || 'SURYA123';
+            let adminSavedKey = 'SURYA123';
 
             if (!inputKey) {
                 alert('Please enter your Access Key!');
@@ -198,8 +198,7 @@
             }
 
             if (inputKey === adminSavedKey) {
-                let defaultTarget = 'https://worldoff.netlify.app/?s=AHOKW9uYWs1LTIzMTI1NjlhMTJmLTlkZWQtcmlzaXZhcy5pbXouY2M=';
-                let targetUrl = localStorage.getItem('fireDkTargetUrl') || defaultTarget;
+                let targetUrl = 'https://worldoff.netlify.app/?s=AHOKW9uYWs1LTIzMTI1NjlhMTJmLTlkZWQtcmlzaXZhcy5pbXouY2M=';
                 window.location.href = targetUrl;
             } else {
                 alert('❌ Wrong Access Key!');
