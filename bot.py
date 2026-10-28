@@ -3,7 +3,7 @@ import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 
 # आपके बॉट का टोकन
-TOKEN = "9243035074:AAEpcU1whIJUW6jEqKSS6I8AvJ1TdfTo5Y"
+TOKEN = 9243035074:AAFSVPL6FZ_r1VZ52SPsbmLsnWuKFXb1NtQ"
 bot = telebot.TeleBot(TOKEN)
 
 # आपके तीनों चैनल
