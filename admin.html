@@ -79,7 +79,7 @@
         <div class="form-group">
             <label>📢 Telegram Channel 1 Link</label>
             <div class="input-row">
-                <input type="text" id="ch1" placeholder="https://t.me/...">
+                <input type="text" id="ch1" placeholder="https://t.me/... (खाली छोड़कर सेव करने पर हट जाएगा)">
                 <button class="single-save-btn" onclick="saveField('fireDkCh1', 'ch1', 'चैनल 1 अपडेट हो गया!')">Save Ch 1</button>
             </div>
         </div>
@@ -87,7 +87,7 @@
         <div class="form-group">
             <label>📢 Telegram Channel 2 Link</label>
             <div class="input-row">
-                <input type="text" id="ch2" placeholder="https://t.me/...">
+                <input type="text" id="ch2" placeholder="https://t.me/... (खाली छोड़कर सेव करने पर हट जाएगा)">
                 <button class="single-save-btn" onclick="saveField('fireDkCh2', 'ch2', 'चैनल 2 अपडेट हो गया!')">Save Ch 2</button>
             </div>
         </div>
@@ -95,7 +95,7 @@
         <div class="form-group">
             <label>📢 Telegram Channel 3 Link</label>
             <div class="input-row">
-                <input type="text" id="ch3" placeholder="https://t.me/...">
+                <input type="text" id="ch3" placeholder="https://t.me/... (खाली छोड़कर सेव करने पर हट जाएगा)">
                 <button class="single-save-btn" onclick="saveField('fireDkCh3', 'ch3', 'चैनल 3 अपडेट हो गया!')">Save Ch 3</button>
             </div>
         </div>
@@ -118,7 +118,9 @@
                 localStorage.setItem(storageKey, val);
                 showNotification("✅ " + messageText);
             } else {
-                alert("कृपया खाली बॉक्स न छोड़ें!");
+                // अगर बॉक्स खाली है, तो localStorage से इसे हटा (Delete) देगा
+                localStorage.removeItem(storageKey);
+                showNotification("🗑️ चैनल हटा दिया गया (Empty कर दिया)!");
             }
         }
 
