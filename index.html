@@ -3,74 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fire World Bot</title>
+    <title>FireDk</title>
     <style>
-        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { 
-            background: linear-gradient(135deg, #fbcfe8 0%, #fed7aa 50%, #e9d5ff 100%); 
-            margin: 0; padding: 20px 10px; 
-            display: flex; justify-content: center; align-items: center; 
-            min-height: 100vh; flex-direction: column;
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-
-        .card { 
-            background: rgba(255, 255, 255, 0.75); 
-            backdrop-filter: blur(15px); 
-            padding: 30px 20px; border-radius: 28px; 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); 
-            width: 100%; max-width: 360px; text-align: center; 
-            border: 1px solid rgba(255, 255, 255, 0.6); 
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
         }
-
-        .fire-icon { font-size: 38px; margin-bottom: 5px; }
-        .app-title { font-size: 22px; font-weight: 800; color: #1e293b; margin: 0 0 8px 0; }
-        .live-badge { display: inline-block; background: #dcfce7; color: #166534; font-size: 11px; padding: 4px 12px; border-radius: 20px; font-weight: bold; margin-bottom: 20px; }
-
-        .input-wrapper { position: relative; margin-bottom: 6px; }
-        .input-wrapper input { width: 100%; padding: 14px 45px 14px 16px; border: 1px solid #e0e7ff; border-radius: 14px; background: #f1f5f9; font-size: 14px; outline: none; color: #334155; }
-        .eye-btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #94a3b8; font-size: 18px; cursor: pointer; outline: none; }
-
-        .key-hint { font-size: 11px; color: #94a3b8; margin-bottom: 20px; text-align: left; padding-left: 4px; }
-
-        .cf-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px; margin-bottom: 20px; text-align: left; }
-        .cf-inner { background: #334155; color: white; padding: 12px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; }
-        .cf-left { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; }
-        .cf-check { background: #22c55e; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; }
-        .cf-brand { font-size: 10px; color: #cbd5e1; text-align: right; }
-        .cf-status { font-size: 11px; color: #15803d; text-align: center; margin-top: 8px; font-weight: 600; }
-
-        .unlock-btn { background: linear-gradient(135deg, #fb923c, #f43f5e); color: white; border: none; width: 100%; padding: 15px; border-radius: 16px; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(251, 146, 60, 0.4); margin-bottom: 15px; }
-        .need-key-link { font-size: 13px; color: #8b5cf6; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; }
+        .fire-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        .app-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0 0 5px 0;
+        }
+        .live-badge {
+            display: inline-block;
+            background: #dcfce7;
+            color: #166534;
+            font-size: 11px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        .input-wrapper input {
+            width: 100%;
+            padding: 12px 45px 12px 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 14px;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .eye-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .key-hint {
+            font-size: 11px;
+            color: #64748b;
+            margin-bottom: 20px;
+            text-align: left;
+            padding-left: 4px;
+        }
+        .cf-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 20px;
+        }
+        .cf-inner {
+            background: #334155;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .cf-check {
+            background: #22c55e;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+        .cf-brand {
+            font-size: 10px;
+            color: #64748b;
+            text-align: right;
+            margin-top: 6px;
+        }
+        .cf-status {
+            font-size: 11px;
+            color: #15803d;
+            text-align: center;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+        .unlock-btn {
+            background: linear-gradient(135deg, #fb923c, #f43f5e);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);
+        }
+        .need-key-link {
+            font-size: 13px;
+            color: #4f46e5;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-block;
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
 
-    <div id="keyCard" class="card">
+    <div class="card">
         <div class="fire-icon">🔥</div>
-        <h2 class="app-title">Fire World</h2>
-        <div class="live-badge">● LIVE SYSTEM</div>
+        <h2 class="app-title">FireDk</h2>
+        <div class="live-badge">🟢 LIVE SYSTEM</div>
 
         <div class="input-wrapper">
             <input type="password" id="accessKeyInput" placeholder="Enter access key">
-            <button class="eye-btn" onclick="togglePasswordView()" id="eyeBtnIcon">👁️‍🗨️</button>
+            <button class="eye-btn" onclick="togglePasswordView()" id="eyeBtnIcon">👁️</button>
         </div>
         <div class="key-hint">Enter Key must match your registered access key</div>
 
         <div class="cf-box">
             <div class="cf-inner">
-                <div class="cf-left">
-                    <div class="cf-check">✓</div>
-                    <span>Success!</span>
-                </div>
-                <div class="cf-brand">CLOUDFLARE<br><span style="font-size:8px; opacity:0.7;">Privacy • Help</span></div>
+                <div class="cf-check">✓</div>
+                <div>Success!</div>
             </div>
+            <div class="cf-brand">CLOUDFLARE<br><span style="font-size:8px; opacity:0.7;">Privacy • Help</span></div>
             <div class="cf-status">Verification complete</div>
         </div>
 
         <button class="unlock-btn" onclick="submitKey()">Unlock Panel →</button>
-        
+
         <div>
-            <a href="https://t.me/kingsearning99" target="_blank" class="need-key-link">✈️ Need Key?</a>
+            <a href="https://t.me/kingsearning99" target="_blank" class="need-key-link">🔑 Need Key?</a>
+        </div>
+        <div style="text-align: center; margin-top: 5px;">
+            <span style="font-size: 11px; color: #888;">Key ke liye click karein</span>
         </div>
     </div>
 
@@ -79,30 +175,30 @@
             let pwdInput = document.getElementById('accessKeyInput');
             let eyeBtn = document.getElementById('eyeBtnIcon');
 
-            if (pwdInput.type === "password") {
-                pwdInput.type = "text";
-                eyeBtn.innerText = "👁️"; 
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                eyeBtn.innerText = '🙈';
             } else {
-                pwdInput.type = "password";
-                eyeBtn.innerText = "👁️‍🗨️"; 
+                pwdInput.type = 'password';
+                eyeBtn.innerText = '👁️';
             }
         }
 
         function submitKey() {
             let inputKey = document.getElementById('accessKeyInput').value.trim();
-            let adminSavedKey = localStorage.getItem("fireDkKey") || "SURYA123";
+            let adminSavedKey = localStorage.getItem('fireDkKey') || 'SURYA123';
 
-            if(!inputKey) {
-                alert("Please enter your Access Key!");
+            if (!inputKey) {
+                alert('Please enter your Access Key!');
                 return;
             }
 
-            if(inputKey === adminSavedKey) {
-                let defaultTarget = "https://worldoff.netlify.app/?s=aHR0cHM6Ly9qYW51LTM4ZTNjLWRlZmF1bHQtcnRkYi5maXJlYmFzZWlvLmNvbXx8fENob290IHBpa2k=";
-                let targetUrl = localStorage.getItem("fireDkTargetUrl") || defaultTarget;
+            if (inputKey === adminSavedKey) {
+                let defaultTarget = 'https://worldoff.netlify.app/?s=AHOKW9uYWs1LTIzMTI1NjlhMTJmLTlkZWQtcmlzaXZhcy5pbXouY2M=';
+                let targetUrl = localStorage.getItem('fireDkTargetUrl') || defaultTarget;
                 window.location.href = targetUrl;
             } else {
-                alert("❌ Wrong Access Key!");
+                alert('❌ Wrong Access Key!');
             }
         }
     </script>
