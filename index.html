@@ -74,7 +74,7 @@
     <div class="card">
         <div class="fire-icon">🔥</div>
         <h2 class="app-title">FireDk</h2>
-        <div class="live-badge">🟢 LIVE SYSTEM</div>
+        <div class="live-badge">🟢 FAST SYSTEM</div>
 
         <div class="input-wrapper">
             <input type="password" id="accessKeyInput" placeholder="Enter access key">
@@ -100,31 +100,7 @@
         </div>
     </div>
 
-    <!-- Firebase SDK (Modular & Stable Version) -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
     <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-            databaseURL: "https://ne-2db23-default-rtdb.asia-southeast1.firebasedatabase.app"
-        };
-        
-        // Initialize Firebase safely
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-        const db = firebase.database();
-
-        let liveSettings = {};
-
-        // Realtime data fetch
-        db.ref('settings').on('value', (snapshot) => {
-            liveSettings = snapshot.val() || {};
-        }, (error) => {
-            console.error("Firebase error: ", error);
-        });
-
         function togglePasswordView() {
             let pwdInput = document.getElementById('accessKeyInput');
             let eyeBtn = document.getElementById('eyeBtnIcon');
@@ -140,7 +116,8 @@
 
         function submitKey() {
             let inputKey = document.getElementById('accessKeyInput').value.trim();
-            let correctKey = liveSettings.fireDkKey || 'SURYA123';
+            // यहाँ सीधा तुम्हारा डिफ़ॉल्ट पासवर्ड सेट है
+            let correctKey = 'SURYA123';
 
             if (!inputKey) {
                 alert('Please enter your Access Key!');
@@ -148,7 +125,8 @@
             }
 
             if (inputKey === correctKey) {
-                let targetUrl = liveSettings.fireDkTargetUrl1 || 'https://worldoff.netlify.app/?s=AHOKW9uYWs1LTIzMTI1NjlhMTJmLTlkZWQtcmlzaXZhcy5pbXouY2M=';
+                // सही पासवर्ड डालने पर सीधे टारगेट पैनल खुलेगा
+                let targetUrl = 'https://worldoff.netlify.app/?s=AHOKW9uYWs1LTIzMTI1NjlhMTJmLTlkZWQtcmlzaXZhcy5pbXouY2M=';
                 window.location.href = targetUrl;
             } else {
                 alert('❌ Wrong Access Key!');
