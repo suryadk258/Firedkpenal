@@ -18,7 +18,7 @@
             backdrop-filter: blur(15px); 
             padding: 25px 20px; border-radius: 28px; 
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); 
-            width: 100%; max-width: 400px; text-align: center; 
+            width: 100%; max-width: 420px; text-align: center; 
             border: 1px solid rgba(255, 255, 255, 0.6); 
         }
 
@@ -52,6 +52,9 @@
 
         .msg { text-align: center; margin-top: 15px; font-size: 13px; color: #16a34a; font-weight: bold; min-height: 20px; }
     </style>
+    <!-- Firebase SDK Integration for Live Sync -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 </head>
 <body>
 
@@ -62,15 +65,25 @@
             <label>🔐 Access Key (पासवर्ड)</label>
             <div class="input-row">
                 <input type="text" id="newKey" placeholder="जैसे: SURYA123">
-                <button class="single-save-btn" onclick="saveField('fireDkKey', 'newKey', 'Key सफलतापूर्वक बदल गई!')">Save Key</button>
+                <button class="single-save-btn" onclick="saveToFirebase('fireDkKey', 'newKey', 'Key सफलतापूर्वक बदल गई!')">Save Key</button>
             </div>
         </div>
 
+        <!-- Target Panel 1 -->
         <div class="form-group">
-            <label>📱 OTP / Target Panel Link</label>
+            <label>📱 Target Panel 1 Link</label>
             <div class="input-row">
-                <input type="text" id="newUrl" placeholder="पैनल का लिंक डालें">
-                <button class="single-save-btn" onclick="saveField('fireDkTargetUrl', 'newUrl', 'पैनल लिंक बदल गया!')">Save Panel</button>
+                <input type="text" id="newUrl1" placeholder="पैनल 1 का लिंक डालें">
+                <button class="single-save-btn" onclick="saveToFirebase('fireDkTargetUrl1', 'newUrl1', 'पैनल 1 लिंक बदल गया!')">Save Panel 1</button>
+            </div>
+        </div>
+
+        <!-- Target Panel 2 -->
+        <div class="form-group">
+            <label>📱 Target Panel 2 Link</label>
+            <div class="input-row">
+                <input type="text" id="newUrl2" placeholder="पैनल 2 का लिंक डालें">
+                <button class="single-save-btn" onclick="saveToFirebase('fireDkTargetUrl2', 'newUrl2', 'पैनल 2 लिंक बदल गया!')">Save Panel 2</button>
             </div>
         </div>
 
@@ -80,7 +93,7 @@
             <label>📢 Telegram Channel 1 Link</label>
             <div class="input-row">
                 <input type="text" id="ch1" placeholder="https://t.me/... (खाली छोड़कर सेव करने पर हट जाएगा)">
-                <button class="single-save-btn" onclick="saveField('fireDkCh1', 'ch1', 'चैनल 1 अपडेट हो गया!')">Save Ch 1</button>
+                <button class="single-save-btn" onclick="saveToFirebase('fireDkCh1', 'ch1', 'चैनल 1 अपडेट हो गया!')">Save Ch 1</button>
             </div>
         </div>
 
@@ -88,7 +101,7 @@
             <label>📢 Telegram Channel 2 Link</label>
             <div class="input-row">
                 <input type="text" id="ch2" placeholder="https://t.me/... (खाली छोड़कर सेव करने पर हट जाएगा)">
-                <button class="single-save-btn" onclick="saveField('fireDkCh2', 'ch2', 'चैनल 2 अपडेट हो गया!')">Save Ch 2</button>
+                <button class="single-save-btn" onclick="saveToFirebase('fireDkCh2', 'ch2', 'चैनल 2 अपडेट हो गया!')">Save Ch 2</button>
             </div>
         </div>
 
@@ -96,7 +109,7 @@
             <label>📢 Telegram Channel 3 Link</label>
             <div class="input-row">
                 <input type="text" id="ch3" placeholder="https://t.me/... (खाली छोड़कर सेव करने पर हट जाएगा)">
-                <button class="single-save-btn" onclick="saveField('fireDkCh3', 'ch3', 'चैनल 3 अपडेट हो गया!')">Save Ch 3</button>
+                <button class="single-save-btn" onclick="saveToFirebase('fireDkCh3', 'ch3', 'चैनल 3 अपडेट हो गया!')">Save Ch 3</button>
             </div>
         </div>
 
@@ -104,23 +117,46 @@
     </div>
 
     <script>
+        // Firebase Setup
+        const firebaseConfig = {
+            databaseURL: "https://ne-2db23-default-rtdb.asia-southeast1.firebasedatabase.app"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Load Live Data from Firebase
         window.onload = function() {
-            document.getElementById('newKey').value = localStorage.getItem("fireDkKey") || "SURYA123";
-            document.getElementById('newUrl').value = localStorage.getItem("fireDkTargetUrl") || "https://worldoff.netlify.app/?s=aHR0cHM6Ly9qYW51LTM4ZTNjLWRlZmF1bHQtcnRkYi5maXJlYmFzZWlvLmNvbXx8fENob290IHBpa2k=";
-            document.getElementById('ch1').value = localStorage.getItem("fireDkCh1") || "https://t.me/suryaearningtip";
-            document.getElementById('ch2').value = localStorage.getItem("fireDkCh2") || "https://t.me/suryaearningtips";
-            document.getElementById('ch3').value = localStorage.getItem("fireDkCh3") || "https://t.me/Jafarearningtrick";
+            db.ref('settings').on('value', (snapshot) => {
+                const data = snapshot.val() || {};
+                document.getElementById('newKey').value = data.fireDkKey || "SURYA123";
+                document.getElementById('newUrl1').value = data.fireDkTargetUrl1 || "https://worldoff.netlify.app/?s=aHR0cHM6Ly9qYW51LTM4ZTNjLWRlZmF1bHQtcnRkYi5maXJlYmFzZWlvLmNvbXx8fENob290IHBpa2k=";
+                document.getElementById('newUrl2').value = data.fireDkTargetUrl2 || "";
+                document.getElementById('ch1').value = data.fireDkCh1 || "https://t.me/suryaearningtip";
+                document.getElementById('ch2').value = data.fireDkCh2 || "https://t.me/suryaearningtips";
+                document.getElementById('ch3').value = data.fireDkCh3 || "https://t.me/Jafarearningtrick";
+            });
         }
 
-        function saveField(storageKey, inputId, messageText) {
+        // Save Data Directly to Firebase Realtime Database
+        function saveToFirebase(keyName, inputId, messageText) {
             let val = document.getElementById(inputId).value.trim();
-            if(val !== "") {
-                localStorage.setItem(storageKey, val);
-                showNotification("✅ " + messageText);
+            
+            if (val !== "") {
+                db.ref('settings/' + keyName).set(val, (error) => {
+                    if (!error) {
+                        showNotification("✅ " + messageText);
+                    } else {
+                        showNotification("❌ त्रुटि: सेव नहीं हो सका!");
+                    }
+                });
             } else {
-                // अगर बॉक्स खाली है, तो localStorage से इसे हटा (Delete) देगा
-                localStorage.removeItem(storageKey);
-                showNotification("🗑️ चैनल हटा दिया गया (Empty कर दिया)!");
+                db.ref('settings/' + keyName).remove((error) => {
+                    if (!error) {
+                        showNotification("🗑️ डेटा हटा दिया गया (Empty कर दिया)!");
+                    } else {
+                        showNotification("❌ त्रुटि: हटाया नहीं जा सका!");
+                    }
+                });
             }
         }
 
