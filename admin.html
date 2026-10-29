@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔥 FireDk - Admin Control Panel</title>
+    <title>🔥 FireDk - Advanced Admin Panel</title>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
@@ -44,7 +44,7 @@
 
         .container {
             width: 100%;
-            max-width: 440px;
+            max-width: 480px;
             display: flex;
             flex-direction: column;
             gap: 20px;
@@ -56,7 +56,7 @@
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border-color);
             border-radius: 28px;
-            padding: 28px 24px;
+            padding: 24px 20px;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
         }
 
@@ -64,14 +64,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .logo-area {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 800;
         }
 
@@ -85,49 +85,36 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             color: var(--accent-green);
             background: rgba(48, 209, 88, 0.1);
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 20px;
             border: 1px solid rgba(48, 209, 88, 0.2);
         }
 
         .status-dot {
-            width: 7px;
-            height: 7px;
+            width: 6px;
+            height: 6px;
             background-color: var(--accent-green);
             border-radius: 50%;
-            box-shadow: 0 0 8px var(--accent-green);
-            animation: pulse 2s infinite;
+            box-shadow: 0 0 6px var(--accent-green);
         }
 
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.4; }
-            100% { opacity: 1; }
-        }
-
-        .title {
-            font-size: 20px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--accent-orange);
             display: flex;
             align-items: center;
-            gap: 8px;
-        }
-
-        .subtitle {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 24px;
+            gap: 6px;
         }
 
         .input-group {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: 14px;
             text-align: left;
         }
 
@@ -136,9 +123,8 @@
             font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             display: block;
-            letter-spacing: 0.5px;
         }
 
         .input-field-wrapper {
@@ -149,19 +135,19 @@
 
         .input-field-wrapper i {
             position: absolute;
-            left: 16px;
+            left: 14px;
             color: var(--text-muted);
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .custom-input {
             width: 100%;
             background: rgba(0, 0, 0, 0.4);
             border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 14px 16px 14px 44px;
+            border-radius: 12px;
+            padding: 12px 14px 12px 40px;
             color: #fff;
-            font-size: 15px;
+            font-size: 14px;
             outline: none;
             transition: all 0.2s;
         }
@@ -171,39 +157,86 @@
             box-shadow: 0 0 0 3px rgba(255, 149, 0, 0.2);
         }
 
-        .btn-save {
+        .btn-action-main {
             width: 100%;
             background: linear-gradient(135deg, #ff3b30, #ff9500);
             border: none;
-            border-radius: 14px;
-            padding: 15px;
+            border-radius: 12px;
+            padding: 13px;
             color: #fff;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            box-shadow: 0 8px 20px rgba(255, 59, 48, 0.3);
-            transition: transform 0.1s;
+            box-shadow: 0 6px 15px rgba(255, 59, 48, 0.3);
+            margin-bottom: 10px;
         }
 
-        .btn-save:active {
-            transform: scale(0.98);
+        .links-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 220px;
+            overflow-y: auto;
+            margin-top: 10px;
         }
+
+        .link-item {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 10px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .link-info {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 13px;
+        }
+
+        .link-info b {
+            color: var(--accent-orange);
+            display: block;
+            font-size: 12px;
+        }
+
+        .link-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-sm {
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            color: #fff;
+        }
+
+        .btn-edit { background: rgba(255, 149, 0, 0.2); color: var(--accent-orange); border: 1px solid rgba(255, 149, 0, 0.3); }
+        .btn-del { background: rgba(255, 59, 48, 0.2); color: var(--accent-red); border: 1px solid rgba(255, 59, 48, 0.3); }
 
         .toast {
             position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
-            background: rgba(48, 209, 88, 0.9);
+            background: rgba(48, 209, 88, 0.95);
             color: #fff;
-            padding: 12px 24px;
-            border-radius: 12px;
+            padding: 10px 20px;
+            border-radius: 10px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
             transition: transform 0.3s ease;
             z-index: 1000;
@@ -217,13 +250,14 @@
             text-align: center;
             font-size: 11px;
             color: var(--text-muted);
-            margin-top: 14px;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
+    <!-- Password Card -->
     <div class="card">
         <div class="brand-header">
             <div class="logo-area">
@@ -232,48 +266,63 @@
             </div>
             <div class="status-badge">
                 <div class="status-dot"></div>
-                <span>Admin Mode</span>
+                <span>Security</span>
             </div>
         </div>
 
-        <div class="title">
-            <i class="fa-solid fa-sliders" style="color: var(--accent-orange);"></i> Control Panel
-        </div>
-        <div class="subtitle">Update system configurations live</div>
-
-        <form onsubmit="saveSettings(event)">
+        <div class="section-title"><i class="fa-solid fa-key"></i> Password Manager</div>
+        <form onsubmit="savePassword(event)">
             <div class="input-group">
-                <label class="input-label">Change Access Password</label>
+                <label class="input-label">Access Password</label>
                 <div class="input-field-wrapper">
-                    <i class="fa-solid fa-key"></i>
-                    <input type="text" id="newPassword" class="custom-input" placeholder="नया पासवर्ड दर्ज करें..." required>
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="text" id="adminPassword" class="custom-input" placeholder="Naya password dalein..." required>
                 </div>
             </div>
-
-            <div class="input-group">
-                <label class="input-label">Target Redirect URL</label>
-                <div class="input-field-wrapper">
-                    <i class="fa-solid fa-link"></i>
-                    <input type="url" id="targetUrl" class="custom-input" placeholder="https://example.com" required>
-                </div>
-            </div>
-
-            <button type="submit" class="btn-save">
-                <i class="fa-solid fa-cloud-arrow-up"></i>
-                <span>डेटाबेस में सेव करें</span>
+            <button type="submit" class="btn-action-main">
+                <i class="fa-solid fa-check"></i>
+                <span>Password Update Karein</span>
             </button>
         </form>
     </div>
 
-    <div class="footer-note">
-        FireDk Secure Admin Console • Realtime Sync Enabled
+    <!-- Links Management Card -->
+    <div class="card">
+        <div class="section-title"><i class="fa-solid fa-link"></i> Telegram / Target Links</div>
+        <form onsubmit="saveOrUpdateLink(event)">
+            <input type="hidden" id="editingLinkId">
+            <div class="input-group">
+                <label class="input-label">Link Title (Jaise: Telegram Channel)</label>
+                <div class="input-field-wrapper">
+                    <i class="fa-solid fa-heading"></i>
+                    <input type="text" id="linkTitle" class="custom-input" placeholder="Title dalein..." required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">URL (https://...)</label>
+                <div class="input-field-wrapper">
+                    <i class="fa-solid fa-globe"></i>
+                    <input type="url" id="linkURL" class="custom-input" placeholder="https://t.me/yourchannel" required>
+                </div>
+            </div>
+
+            <button type="submit" id="submitLinkBtn" class="btn-action-main">
+                <i class="fa-solid fa-plus"></i>
+                <span>Link Add Karein</span>
+            </button>
+        </form>
+
+        <div style="margin-top: 15px; font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Saved Links List:</div>
+        <div id="linksContainer" class="links-list">
+            <div style="text-align: center; color: var(--text-muted); font-size: 13px; padding: 10px;">Load ho raha hai...</div>
+        </div>
     </div>
 </div>
 
-<!-- Toast Notification -->
-<div id="toast" class="toast">सेटिंग्स सफलतापूर्वक सेव हो गई!</div>
+<div id="toast" class="toast">Successfully Updated!</div>
 
-<!-- Firebase Realtime Database SDK (v8) -->
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
@@ -287,42 +336,102 @@
     }
     const db = firebase.database();
 
-    // Load existing settings into inputs automatically
-    db.ref('settings').once('value').then((snapshot) => {
+    // Load Password and Links
+    db.ref('settings/access_key').on('value', (snapshot) => {
         if (snapshot.exists()) {
-            const data = snapshot.val();
-            if (data.access_key) {
-                document.getElementById('newPassword').value = data.access_key;
-            }
-            if (data.target_url) {
-                document.getElementById('targetUrl').value = data.target_url;
-            }
+            document.getElementById('adminPassword').value = snapshot.val();
         }
     });
 
-    // Save configurations to Firebase Realtime Database
-    function saveSettings(e) {
-        e.preventDefault();
-        const pass = document.getElementById('newPassword').value.trim();
-        const url = document.getElementById('targetUrl').value.trim();
+    const linksRef = db.ref('links');
+    linksRef.on('value', (snapshot) => {
+        const container = document.getElementById('linksContainer');
+        container.innerHTML = '';
+        
+        if (!snapshot.exists()) {
+            container.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 13px; padding: 10px;">Koi link nahi hai abhi.</div>';
+            return;
+        }
 
-        db.ref('settings').set({
-            access_key: pass,
-            target_url: url
-        }).then(() => {
-            showToast("सफलतापूर्वक डेटाबेस में अपडेट हो गया!");
-        }).catch((error) => {
-            alert("सेव करने में त्रुटि: " + error.message);
+        snapshot.forEach((childSnapshot) => {
+            const key = childSnapshot.key;
+            const data = childSnapshot.val();
+
+            const item = document.createElement('div');
+            item.className = 'link-item';
+            item.innerHTML = `
+                <div class="link-info">
+                    <b>${data.title}</b>
+                    <span style="color: var(--text-muted); font-size: 11px;">${data.url}</span>
+                </div>
+                <div class="link-actions">
+                    <button class="btn-sm btn-edit" onclick="editLink('${key}', '${data.title}', '${data.url}')"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn-sm btn-del" onclick="deleteLink('${key}')"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `;
+            container.appendChild(item);
+        });
+    });
+
+    // Save Password
+    function savePassword(e) {
+        e.preventDefault();
+        const newPass = document.getElementById('adminPassword').value.trim();
+        db.ref('settings/access_key').set(newPass).then(() => {
+            showToast("Password successfully update ho gaya!");
         });
     }
 
-    function showToast(message) {
+    // Add or Update Link
+    function saveOrUpdateLink(e) {
+        e.preventDefault();
+        const editingId = document.getElementById('editingLinkId').value;
+        const title = document.getElementById('linkTitle').value.trim();
+        const url = document.getElementById('linkURL').value.trim();
+
+        if (editingId) {
+            // Update existing
+            db.ref('links/' + editingId).set({ title, url }).then(() => {
+                showToast("Link successfully edit ho gayi!");
+                resetLinkForm();
+            });
+        } else {
+            // Add new
+            const newRef = linksRef.push();
+            newRef.set({ title, url }).then(() => {
+                showToast("Nayi link add ho gayi!");
+                resetLinkForm();
+            });
+        }
+    }
+
+    function editLink(key, title, url) {
+        document.getElementById('editingLinkId').value = key;
+        document.getElementById('linkTitle').value = title;
+        document.getElementById('linkURL').value = url;
+        document.getElementById('submitLinkBtn').innerHTML = '<i class="fa-solid fa-pen"></i> <span>Link Update Karein</span>';
+    }
+
+    function deleteLink(key) {
+        if (confirm("Kya aap yeh link delete karna chahte hain?")) {
+            db.ref('links/' + key).remove().then(() => {
+                showToast("Link delete ho gayi!");
+            });
+        }
+    }
+
+    function resetLinkForm() {
+        document.getElementById('editingLinkId').value = '';
+        document.getElementById('linkTitle').value = '';
+        document.getElementById('linkURL').value = '';
+        document.getElementById('submitLinkBtn').innerHTML = '<i class="fa-solid fa-plus"></i> <span>Link Add Karein</span>';
+    }
+
+    function showToast(msg) {
         const toast = document.getElementById('toast');
-        toast.innerText = message;
+        toast.innerText = msg;
         toast.classList.add('show');
-        setTimeout(() => {
-            toast.classList.remove('show');
-        }, 3000);
+        setTimeout(() => toast.classList.remove('show'), 3000);
     }
 </script>
 
