@@ -1,172 +1,330 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fire World Admin Panel</title>
+    <title>🔥 FireDk - Admin Control Panel</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { 
-            background: linear-gradient(135deg, #fbcfe8 0%, #fed7aa 50%, #e9d5ff 100%); 
-            margin: 0; padding: 20px 10px; 
-            display: flex; justify-content: center; align-items: center; 
-            min-height: 100vh; flex-direction: column;
+        :root {
+            --bg-primary: #090b10;
+            --bg-card: rgba(18, 22, 32, 0.85);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-red: #ff3b30;
+            --accent-orange: #ff9500;
+            --accent-green: #30d158;
+            --text-main: #ffffff;
+            --text-muted: #8e8e93;
         }
 
-        .admin-card { 
-            background: rgba(255, 255, 255, 0.85); 
-            backdrop-filter: blur(15px); 
-            padding: 25px 20px; border-radius: 28px; 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); 
-            width: 100%; max-width: 420px; text-align: center; 
-            border: 1px solid rgba(255, 255, 255, 0.6); 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        h2 { color: #1e293b; margin-top: 0; margin-bottom: 20px; font-size: 22px; }
-        
-        .form-group { 
-            background: rgba(255, 255, 255, 0.5); 
-            padding: 12px; border-radius: 16px; 
-            border: 1px solid #e2e8f0; margin-bottom: 14px; 
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(255, 59, 48, 0.12), transparent 50%),
+                radial-gradient(circle at 50% 100%, rgba(255, 149, 0, 0.12), transparent 50%);
+            background-attachment: fixed;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 440px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 28px;
+            padding: 28px 24px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+        }
+
+        .brand-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .logo-area span {
+            background: linear-gradient(135deg, #ff3b30, #ff9500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent-green);
+            background: rgba(48, 209, 88, 0.1);
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(48, 209, 88, 0.2);
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-green);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+        .title {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
             text-align: left;
         }
 
-        label { display: block; font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 6px; }
-        
-        .input-row { display: flex; gap: 8px; }
-        
-        input { 
-            flex: 1; padding: 10px 12px; 
-            background: #f1f5f9; border: 1px solid #cbd5e1; 
-            border-radius: 10px; font-size: 13px; outline: none; color: #334155; 
+        .input-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            display: block;
+            letter-spacing: 0.5px;
         }
-        input:focus { border-color: #a855f7; }
 
-        .single-save-btn { 
-            background: linear-gradient(135deg, #a855f7, #6366f1); 
-            color: white; border: none; padding: 10px 14px; 
-            border-radius: 10px; font-size: 12px; font-weight: bold; 
-            cursor: pointer; white-space: nowrap; transition: 0.2s; 
+        .input-field-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
         }
-        .single-save-btn:active { transform: scale(0.95); }
 
-        .msg { text-align: center; margin-top: 15px; font-size: 13px; color: #16a34a; font-weight: bold; min-height: 20px; }
+        .input-field-wrapper i {
+            position: absolute;
+            left: 16px;
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        .custom-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 14px 16px 14px 44px;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .custom-input:focus {
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 0 3px rgba(255, 149, 0, 0.2);
+        }
+
+        .btn-save {
+            width: 100%;
+            background: linear-gradient(135deg, #ff3b30, #ff9500);
+            border: none;
+            border-radius: 14px;
+            padding: 15px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 8px 20px rgba(255, 59, 48, 0.3);
+            transition: transform 0.1s;
+        }
+
+        .btn-save:active {
+            transform: scale(0.98);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(48, 209, 88, 0.9);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 14px;
+        }
     </style>
-    <!-- Firebase SDK Integration for Live Sync -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 </head>
 <body>
 
-    <div class="admin-card">
-        <h2>🛠️ Fire World Admin</h2>
-
-        <div class="form-group">
-            <label>🔐 Access Key (पासवर्ड)</label>
-            <div class="input-row">
-                <input type="text" id="newKey" placeholder="जैसे: SURYA123">
-                <button class="single-save-btn" onclick="saveToFirebase('fireDkKey', 'newKey', 'Key सफलतापूर्वक बदल गई!')">Save Key</button>
+<div class="container">
+    <div class="card">
+        <div class="brand-header">
+            <div class="logo-area">
+                <i class="fa-solid fa-fire" style="color: #ff3b30;"></i>
+                <span>FireDk</span>
+            </div>
+            <div class="status-badge">
+                <div class="status-dot"></div>
+                <span>Admin Mode</span>
             </div>
         </div>
 
-        <!-- Target Panel 1 -->
-        <div class="form-group">
-            <label>📱 Target Panel 1 Link</label>
-            <div class="input-row">
-                <input type="text" id="newUrl1" placeholder="पैनल 1 का लिंक डालें">
-                <button class="single-save-btn" onclick="saveToFirebase('fireDkTargetUrl1', 'newUrl1', 'पैनल 1 लिंक बदल गया!')">Save Panel 1</button>
-            </div>
+        <div class="title">
+            <i class="fa-solid fa-sliders" style="color: var(--accent-orange);"></i> Control Panel
         </div>
+        <div class="subtitle">Update system configurations live</div>
 
-        <!-- Target Panel 2 -->
-        <div class="form-group">
-            <label>📱 Target Panel 2 Link</label>
-            <div class="input-row">
-                <input type="text" id="newUrl2" placeholder="पैनल 2 का लिंक डालें">
-                <button class="single-save-btn" onclick="saveToFirebase('fireDkTargetUrl2', 'newUrl2', 'पैनल 2 लिंक बदल गया!')">Save Panel 2</button>
+        <form onsubmit="saveSettings(event)">
+            <div class="input-group">
+                <label class="input-label">Change Access Password</label>
+                <div class="input-field-wrapper">
+                    <i class="fa-solid fa-key"></i>
+                    <input type="text" id="newPassword" class="custom-input" placeholder="नया पासवर्ड दर्ज करें..." required>
+                </div>
             </div>
-        </div>
 
-        <hr style="border: 0; border-top: 1px solid #cbd5e1; margin: 15px 0;">
-
-        <div class="form-group">
-            <label>📢 Telegram Channel 1 Link</label>
-            <div class="input-row">
-                <input type="text" id="ch1" placeholder="https://t.me/... (खाली छोड़कर सेव करने पर हट जाएगा)">
-                <button class="single-save-btn" onclick="saveToFirebase('fireDkCh1', 'ch1', 'चैनल 1 अपडेट हो गया!')">Save Ch 1</button>
+            <div class="input-group">
+                <label class="input-label">Target Redirect URL</label>
+                <div class="input-field-wrapper">
+                    <i class="fa-solid fa-link"></i>
+                    <input type="url" id="targetUrl" class="custom-input" placeholder="https://example.com" required>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label>📢 Telegram Channel 2 Link</label>
-            <div class="input-row">
-                <input type="text" id="ch2" placeholder="https://t.me/... (खाली छोड़कर सेव करने पर हट जाएगा)">
-                <button class="single-save-btn" onclick="saveToFirebase('fireDkCh2', 'ch2', 'चैनल 2 अपडेट हो गया!')">Save Ch 2</button>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>📢 Telegram Channel 3 Link</label>
-            <div class="input-row">
-                <input type="text" id="ch3" placeholder="https://t.me/... (खाली छोड़कर सेव करने पर हट जाएगा)">
-                <button class="single-save-btn" onclick="saveToFirebase('fireDkCh3', 'ch3', 'चैनल 3 अपडेट हो गया!')">Save Ch 3</button>
-            </div>
-        </div>
-
-        <div id="statusMsg" class="msg"></div>
+            <button type="submit" class="btn-save">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>डेटाबेस में सेव करें</span>
+            </button>
+        </form>
     </div>
 
-    <script>
-        // Firebase Setup (सही और एक जैसी डेटाबेस लिंक)
-        const firebaseConfig = {
-            databaseURL: "https://ne-2db23-default-rtdb.asia-southeast1.firebasedatabase.app"
-        };
+    <div class="footer-note">
+        FireDk Secure Admin Console • Realtime Sync Enabled
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast">सेटिंग्स सफलतापूर्वक सेव हो गई!</div>
+
+<!-- Firebase Realtime Database SDK (v8) -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+    const firebaseConfig = {
+        databaseURL: "https://ne-2db23-default-rtdb.asia-southeast1.firebasedatabase.app"
+    };
+
+    if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+    }
+    const db = firebase.database();
 
-        // Load Live Data from Firebase
-        window.onload = function() {
-            db.ref('settings').on('value', (snapshot) => {
-                const data = snapshot.val() || {};
-                document.getElementById('newKey').value = data.fireDkKey || "SURYA123";
-                document.getElementById('newUrl1').value = data.fireDkTargetUrl1 || "https://worldoff.netlify.app/?s=aHR0cHM6Ly9qYW51LTM4ZTNjLWRlZmF1bHQtcnRkYi5maXJlYmFzZWlvLmNvbXx8fENob290IHBpa2k=";
-                document.getElementById('newUrl2').value = data.fireDkTargetUrl2 || "";
-                document.getElementById('ch1').value = data.fireDkCh1 || "https://t.me/suryaearningtip";
-                document.getElementById('ch2').value = data.fireDkCh2 || "https://t.me/suryaearningtips";
-                document.getElementById('ch3').value = data.fireDkCh3 || "https://t.me/Jafarearningtrick";
-            });
-        }
-
-        // Save Data Directly to Firebase Realtime Database
-        function saveToFirebase(keyName, inputId, messageText) {
-            let val = document.getElementById(inputId).value.trim();
-            
-            if (val !== "") {
-                db.ref('settings/' + keyName).set(val, (error) => {
-                    if (!error) {
-                        showNotification("✅ " + messageText);
-                    } else {
-                        showNotification("❌ त्रुटि: सेव नहीं हो सका!");
-                    }
-                });
-            } else {
-                db.ref('settings/' + keyName).remove((error) => {
-                    if (!error) {
-                        showNotification("🗑️ डेटा हटा दिया गया (Empty कर दिया)!");
-                    } else {
-                        showNotification("❌ त्रुटि: हटाया नहीं जा सका!");
-                    }
-                });
+    // Load existing settings into inputs automatically
+    db.ref('settings').once('value').then((snapshot) => {
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+            if (data.access_key) {
+                document.getElementById('newPassword').value = data.access_key;
+            }
+            if (data.target_url) {
+                document.getElementById('targetUrl').value = data.target_url;
             }
         }
+    });
 
-        function showNotification(text) {
-            let msg = document.getElementById('statusMsg');
-            msg.innerText = text;
-            setTimeout(() => {
-                msg.innerText = "";
-            }, 3000);
-        }
-    </script>
+    // Save configurations to Firebase Realtime Database
+    function saveSettings(e) {
+        e.preventDefault();
+        const pass = document.getElementById('newPassword').value.trim();
+        const url = document.getElementById('targetUrl').value.trim();
+
+        db.ref('settings').set({
+            access_key: pass,
+            target_url: url
+        }).then(() => {
+            showToast("सफलतापूर्वक डेटाबेस में अपडेट हो गया!");
+        }).catch((error) => {
+            alert("सेव करने में त्रुटि: " + error.message);
+        });
+    }
+
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.innerText = message;
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+</script>
+
 </body>
 </html>
