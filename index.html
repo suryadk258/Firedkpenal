@@ -142,6 +142,9 @@
             margin-top: 15px;
         }
     </style>
+    <!-- Firebase SDK Integration -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 </head>
 <body>
 
@@ -168,13 +171,27 @@
         <button class="unlock-btn" onclick="submitKey()">Unlock Panel →</button>
 
         <div>
-            <a href="https://t.me/kingsearning99" target="_blank" class="animated-key-text">
+            <a href="https://t.me/kingsearning99" target="_blank" class="animated-key-text" id="tgKeyBtn">
                 🔑 Key ke liye yahan click karein
             </a>
         </div>
     </div>
 
     <script>
+        // Firebase Setup
+        const firebaseConfig = {
+            databaseURL: "https://ne-2db23-default-rtdb.asia-southeast1.firebasedatabase.app"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let liveSettings = {};
+
+        // Firebase se live settings load karna
+        db.ref('settings').on('value', (snapshot) => {
+            liveSettings = snapshot.val() || {};
+        });
+
         function togglePasswordView() {
             let pwdInput = document.getElementById('accessKeyInput');
             let eyeBtn = document.getElementById('eyeBtnIcon');
@@ -190,15 +207,18 @@
 
         function submitKey() {
             let inputKey = document.getElementById('accessKeyInput').value.trim();
-            let adminSavedKey = 'SURYA123';
+            
+            // Admin panel mein set kiya gaya password (agar database mein nahi hai toh default 'SURYA123')
+            let correctKey = liveSettings.fireDkKey || 'SURYA123';
 
             if (!inputKey) {
                 alert('Please enter your Access Key!');
                 return;
             }
 
-            if (inputKey === adminSavedKey) {
-                let targetUrl = 'https://worldoff.netlify.app/?s=AHOKW9uYWs1LTIzMTI1NjlhMTJmLTlkZWQtcmlzaXZhcy5pbXouY2M=';
+            if (inputKey === correctKey) {
+                // Admin panel mein set kiya gaya Target Panel 1 ka link khulega
+                let targetUrl = liveSettings.fireDkTargetUrl1 || 'https://worldoff.netlify.app/?s=AHOKW9uYWs1LTIzMTI1NjlhMTJmLTlkZWQtcmlzaXZhcy5pbXouY2M=';
                 window.location.href = targetUrl;
             } else {
                 alert('❌ Wrong Access Key!');
