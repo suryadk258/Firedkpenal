@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔥 FireDk - Easy Admin Panel</title>
+    <title>🔥 FireDk - Individual Admin Panel</title>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
@@ -102,10 +102,18 @@
             box-shadow: 0 0 6px var(--accent-green);
         }
 
+        .section-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
         .section-title {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             color: var(--accent-orange);
             display: flex;
             align-items: center;
@@ -114,16 +122,16 @@
 
         .input-group {
             position: relative;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             text-align: left;
         }
 
         .input-label {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             display: block;
         }
 
@@ -137,17 +145,17 @@
             position: absolute;
             left: 14px;
             color: var(--text-muted);
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .custom-input {
             width: 100%;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.6);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 12px 14px 12px 40px;
+            border-radius: 10px;
+            padding: 11px 14px 11px 38px;
             color: #fff;
-            font-size: 14px;
+            font-size: 13px;
             outline: none;
             transition: all 0.2s;
         }
@@ -157,22 +165,26 @@
             box-shadow: 0 0 0 3px rgba(255, 149, 0, 0.2);
         }
 
-        .btn-save {
+        .btn-individual {
             width: 100%;
-            background: linear-gradient(135deg, #ff3b30, #ff9500);
+            background: linear-gradient(135deg, #30d158, #28a745);
             border: none;
-            border-radius: 12px;
-            padding: 13px;
+            border-radius: 10px;
+            padding: 10px;
             color: #fff;
-            font-size: 15px;
+            font-size: 13px;
             font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            box-shadow: 0 6px 15px rgba(255, 59, 48, 0.3);
-            margin-top: 5px;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(48, 209, 88, 0.2);
+            transition: transform 0.1s;
+        }
+
+        .btn-individual:active {
+            transform: scale(0.98);
         }
 
         .toast {
@@ -218,61 +230,83 @@
             </div>
         </div>
 
-        <form onsubmit="saveAllSettings(event)">
-            <!-- Password Section -->
-            <div class="section-title"><i class="fa-solid fa-key"></i> पासवर्ड बदलें</div>
+        <!-- 1. Password Section -->
+        <div class="section-box">
+            <div class="section-title"><i class="fa-solid fa-key"></i> पासवर्ड मैनेजर</div>
             <div class="input-group">
                 <label class="input-label">Access Password</label>
                 <div class="input-field-wrapper">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="text" id="adminPassword" class="custom-input" placeholder="नया पासवर्ड दर्ज करें..." required>
+                    <input type="text" id="adminPassword" class="custom-input" placeholder="पासवर्ड दर्ज करें...">
                 </div>
             </div>
+            <button type="button" class="btn-individual" onclick="saveField('access_key', document.getElementById('adminPassword').value, 'पासवर्ड')">
+                <i class="fa-solid fa-check"></i> <span>पासवर्ड सेव करें</span>
+            </button>
+        </div>
 
-            <!-- Telegram Links Section -->
-            <div class="section-title" style="margin-top: 20px;"><i class="fa-brands fa-telegram"></i> टेलीग्राम लिंक्स (3 ऑप्शन्स)</div>
-            
+        <!-- 2. Telegram Link 1 -->
+        <div class="section-box">
+            <div class="section-title"><i class="fa-brands fa-telegram"></i> Telegram Link 1</div>
             <div class="input-group">
-                <label class="input-label">Telegram Link 1</label>
+                <label class="input-label">URL 1</label>
                 <div class="input-field-wrapper">
                     <i class="fa-solid fa-paper-plane"></i>
-                    <input type="url" id="tgLink1" class="custom-input" placeholder="https://t.me/channel1">
+                    <input type="url" id="tgLink1" class="custom-input" placeholder="https://t.me/...">
                 </div>
             </div>
+            <button type="button" class="btn-individual" onclick="saveField('tg1', document.getElementById('tgLink1').value, 'Telegram Link 1')">
+                <i class="fa-solid fa-pen"></i> <span>Link 1 सेव/एडिट करें</span>
+            </button>
+        </div>
 
+        <!-- 3. Telegram Link 2 -->
+        <div class="section-box">
+            <div class="section-title"><i class="fa-brands fa-telegram"></i> Telegram Link 2</div>
             <div class="input-group">
-                <label class="input-label">Telegram Link 2</label>
+                <label class="input-label">URL 2</label>
                 <div class="input-field-wrapper">
                     <i class="fa-solid fa-paper-plane"></i>
-                    <input type="url" id="tgLink2" class="custom-input" placeholder="https://t.me/channel2">
+                    <input type="url" id="tgLink2" class="custom-input" placeholder="https://t.me/...">
                 </div>
             </div>
+            <button type="button" class="btn-individual" onclick="saveField('tg2', document.getElementById('tgLink2').value, 'Telegram Link 2')">
+                <i class="fa-solid fa-pen"></i> <span>Link 2 सेव/एडिट करें</span>
+            </button>
+        </div>
 
+        <!-- 4. Telegram Link 3 -->
+        <div class="section-box">
+            <div class="section-title"><i class="fa-brands fa-telegram"></i> Telegram Link 3</div>
             <div class="input-group">
-                <label class="input-label">Telegram Link 3</label>
+                <label class="input-label">URL 3</label>
                 <div class="input-field-wrapper">
                     <i class="fa-solid fa-paper-plane"></i>
-                    <input type="url" id="tgLink3" class="custom-input" placeholder="https://t.me/channel3">
+                    <input type="url" id="tgLink3" class="custom-input" placeholder="https://t.me/...">
                 </div>
             </div>
+            <button type="button" class="btn-individual" onclick="saveField('tg3', document.getElementById('tgLink3').value, 'Telegram Link 3')">
+                <i class="fa-solid fa-pen"></i> <span>Link 3 सेव/एडिट करें</span>
+            </button>
+        </div>
 
-            <!-- Main Panel / Target Link Section -->
-            <div class="section-title" style="margin-top: 20px;"><i class="fa-solid fa-globe"></i> मुख्य पैनल / टारगेट लिंक</div>
+        <!-- 5. Main Panel / Target URL -->
+        <div class="section-box" style="margin-bottom: 0;">
+            <div class="section-title"><i class="fa-solid fa-globe"></i> मुख्य पैनल / टारगेट लिंक</div>
             <div class="input-group">
-                <label class="input-label">Main Panel / Target URL</label>
+                <label class="input-label">Target URL</label>
                 <div class="input-field-wrapper">
                     <i class="fa-solid fa-link"></i>
-                    <input type="url" id="mainTargetUrl" class="custom-input" placeholder="https://example.com" required>
+                    <input type="url" id="mainTargetUrl" class="custom-input" placeholder="https://example.com">
                 </div>
             </div>
-
-            <button type="submit" class="btn-save">
-                <i class="fa-solid fa-cloud-arrow-up"></i>
-                <span>सबकुछ सेव करें</span>
+            <button type="button" class="btn-individual" onclick="saveField('target_url', document.getElementById('mainTargetUrl').value, 'टारगेट लिंक')">
+                <i class="fa-solid fa-pen"></i> <span>टारगेट लिंक सेव/एडिट करें</span>
             </button>
-        </form>
+        </div>
+
     </div>
-    <div class="footer-note">FireDk Admin Console • Instant Realtime Sync</div>
+    <div class="footer-note">FireDk Admin Console • Individual Field Control</div>
 </div>
 
 <div id="toast" class="toast">सफलतापूर्वक सेव हो गया!</div>
@@ -291,7 +325,7 @@
     }
     const db = firebase.database();
 
-    // Load existing settings into inputs automatically
+    // Load existing values into respective inputs automatically
     db.ref('settings').once('value').then((snapshot) => {
         if (snapshot.exists()) {
             const data = snapshot.val();
@@ -303,23 +337,16 @@
         }
     });
 
-    // Save everything in one click
-    function saveAllSettings(e) {
-        e.preventDefault();
-        const pass = document.getElementById('adminPassword').value.trim();
-        const t1 = document.getElementById('tgLink1').value.trim();
-        const t2 = document.getElementById('tgLink2').value.trim();
-        const t3 = document.getElementById('tgLink3').value.trim();
-        const url = document.getElementById('mainTargetUrl').value.trim();
+    // Save individual field separately without altering others
+    function saveField(fieldName, fieldValue, labelName) {
+        const trimmedVal = fieldValue.trim();
+        if (!trimmedVal) {
+            alert(labelName + ' खाली नहीं हो सकता!');
+            return;
+        }
 
-        db.ref('settings').set({
-            access_key: pass,
-            tg1: t1,
-            tg2: t2,
-            tg3: t3,
-            target_url: url
-        }).then(() => {
-            showToast("डेटाबेस में सब कुछ अपडेट हो गया!");
+        db.ref('settings/' + fieldName).set(trimmedVal).then(() => {
+            showToast(labelName + ' सफलतापूर्वक सेव हो गया!');
         }).catch((error) => {
             alert("त्रुटि: " + error.message);
         });
