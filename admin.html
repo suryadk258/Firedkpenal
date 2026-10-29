@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔥 FireDk - Advanced Admin Panel</title>
+    <title>🔥 FireDk - Easy Admin Panel</title>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
@@ -44,7 +44,7 @@
 
         .container {
             width: 100%;
-            max-width: 480px;
+            max-width: 460px;
             display: flex;
             flex-direction: column;
             gap: 20px;
@@ -103,7 +103,7 @@
         }
 
         .section-title {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             margin-bottom: 12px;
             color: var(--accent-orange);
@@ -157,7 +157,7 @@
             box-shadow: 0 0 0 3px rgba(255, 149, 0, 0.2);
         }
 
-        .btn-action-main {
+        .btn-save {
             width: 100%;
             background: linear-gradient(135deg, #ff3b30, #ff9500);
             border: none;
@@ -172,59 +172,8 @@
             justify-content: center;
             gap: 8px;
             box-shadow: 0 6px 15px rgba(255, 59, 48, 0.3);
-            margin-bottom: 10px;
+            margin-top: 5px;
         }
-
-        .links-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-height: 220px;
-            overflow-y: auto;
-            margin-top: 10px;
-        }
-
-        .link-item {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 10px 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .link-info {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            font-size: 13px;
-        }
-
-        .link-info b {
-            color: var(--accent-orange);
-            display: block;
-            font-size: 12px;
-        }
-
-        .link-actions {
-            display: flex;
-            gap: 6px;
-        }
-
-        .btn-sm {
-            padding: 6px 10px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-            color: #fff;
-        }
-
-        .btn-edit { background: rgba(255, 149, 0, 0.2); color: var(--accent-orange); border: 1px solid rgba(255, 149, 0, 0.3); }
-        .btn-del { background: rgba(255, 59, 48, 0.2); color: var(--accent-red); border: 1px solid rgba(255, 59, 48, 0.3); }
 
         .toast {
             position: fixed;
@@ -257,7 +206,6 @@
 <body>
 
 <div class="container">
-    <!-- Password Card -->
     <div class="card">
         <div class="brand-header">
             <div class="logo-area">
@@ -266,61 +214,68 @@
             </div>
             <div class="status-badge">
                 <div class="status-dot"></div>
-                <span>Security</span>
+                <span>Live Control</span>
             </div>
         </div>
 
-        <div class="section-title"><i class="fa-solid fa-key"></i> Password Manager</div>
-        <form onsubmit="savePassword(event)">
+        <form onsubmit="saveAllSettings(event)">
+            <!-- Password Section -->
+            <div class="section-title"><i class="fa-solid fa-key"></i> पासवर्ड बदलें</div>
             <div class="input-group">
                 <label class="input-label">Access Password</label>
                 <div class="input-field-wrapper">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="text" id="adminPassword" class="custom-input" placeholder="Naya password dalein..." required>
+                    <input type="text" id="adminPassword" class="custom-input" placeholder="नया पासवर्ड दर्ज करें..." required>
                 </div>
             </div>
-            <button type="submit" class="btn-action-main">
-                <i class="fa-solid fa-check"></i>
-                <span>Password Update Karein</span>
-            </button>
-        </form>
-    </div>
 
-    <!-- Links Management Card -->
-    <div class="card">
-        <div class="section-title"><i class="fa-solid fa-link"></i> Telegram / Target Links</div>
-        <form onsubmit="saveOrUpdateLink(event)">
-            <input type="hidden" id="editingLinkId">
+            <!-- Telegram Links Section -->
+            <div class="section-title" style="margin-top: 20px;"><i class="fa-brands fa-telegram"></i> टेलीग्राम लिंक्स (3 ऑप्शन्स)</div>
+            
             <div class="input-group">
-                <label class="input-label">Link Title (Jaise: Telegram Channel)</label>
+                <label class="input-label">Telegram Link 1</label>
                 <div class="input-field-wrapper">
-                    <i class="fa-solid fa-heading"></i>
-                    <input type="text" id="linkTitle" class="custom-input" placeholder="Title dalein..." required>
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <input type="url" id="tgLink1" class="custom-input" placeholder="https://t.me/channel1">
                 </div>
             </div>
 
             <div class="input-group">
-                <label class="input-label">URL (https://...)</label>
+                <label class="input-label">Telegram Link 2</label>
                 <div class="input-field-wrapper">
-                    <i class="fa-solid fa-globe"></i>
-                    <input type="url" id="linkURL" class="custom-input" placeholder="https://t.me/yourchannel" required>
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <input type="url" id="tgLink2" class="custom-input" placeholder="https://t.me/channel2">
                 </div>
             </div>
 
-            <button type="submit" id="submitLinkBtn" class="btn-action-main">
-                <i class="fa-solid fa-plus"></i>
-                <span>Link Add Karein</span>
+            <div class="input-group">
+                <label class="input-label">Telegram Link 3</label>
+                <div class="input-field-wrapper">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <input type="url" id="tgLink3" class="custom-input" placeholder="https://t.me/channel3">
+                </div>
+            </div>
+
+            <!-- Main Panel / Target Link Section -->
+            <div class="section-title" style="margin-top: 20px;"><i class="fa-solid fa-globe"></i> मुख्य पैनल / टारगेट लिंक</div>
+            <div class="input-group">
+                <label class="input-label">Main Panel / Target URL</label>
+                <div class="input-field-wrapper">
+                    <i class="fa-solid fa-link"></i>
+                    <input type="url" id="mainTargetUrl" class="custom-input" placeholder="https://example.com" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-save">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>सबकुछ सेव करें</span>
             </button>
         </form>
-
-        <div style="margin-top: 15px; font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Saved Links List:</div>
-        <div id="linksContainer" class="links-list">
-            <div style="text-align: center; color: var(--text-muted); font-size: 13px; padding: 10px;">Load ho raha hai...</div>
-        </div>
     </div>
+    <div class="footer-note">FireDk Admin Console • Instant Realtime Sync</div>
 </div>
 
-<div id="toast" class="toast">Successfully Updated!</div>
+<div id="toast" class="toast">सफलतापूर्वक सेव हो गया!</div>
 
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -336,95 +291,38 @@
     }
     const db = firebase.database();
 
-    // Load Password and Links
-    db.ref('settings/access_key').on('value', (snapshot) => {
+    // Load existing settings into inputs automatically
+    db.ref('settings').once('value').then((snapshot) => {
         if (snapshot.exists()) {
-            document.getElementById('adminPassword').value = snapshot.val();
+            const data = snapshot.val();
+            if (data.access_key) document.getElementById('adminPassword').value = data.access_key;
+            if (data.tg1) document.getElementById('tgLink1').value = data.tg1;
+            if (data.tg2) document.getElementById('tgLink2').value = data.tg2;
+            if (data.tg3) document.getElementById('tgLink3').value = data.tg3;
+            if (data.target_url) document.getElementById('mainTargetUrl').value = data.target_url;
         }
     });
 
-    const linksRef = db.ref('links');
-    linksRef.on('value', (snapshot) => {
-        const container = document.getElementById('linksContainer');
-        container.innerHTML = '';
-        
-        if (!snapshot.exists()) {
-            container.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 13px; padding: 10px;">Koi link nahi hai abhi.</div>';
-            return;
-        }
-
-        snapshot.forEach((childSnapshot) => {
-            const key = childSnapshot.key;
-            const data = childSnapshot.val();
-
-            const item = document.createElement('div');
-            item.className = 'link-item';
-            item.innerHTML = `
-                <div class="link-info">
-                    <b>${data.title}</b>
-                    <span style="color: var(--text-muted); font-size: 11px;">${data.url}</span>
-                </div>
-                <div class="link-actions">
-                    <button class="btn-sm btn-edit" onclick="editLink('${key}', '${data.title}', '${data.url}')"><i class="fa-solid fa-pen"></i></button>
-                    <button class="btn-sm btn-del" onclick="deleteLink('${key}')"><i class="fa-solid fa-trash"></i></button>
-                </div>
-            `;
-            container.appendChild(item);
-        });
-    });
-
-    // Save Password
-    function savePassword(e) {
+    // Save everything in one click
+    function saveAllSettings(e) {
         e.preventDefault();
-        const newPass = document.getElementById('adminPassword').value.trim();
-        db.ref('settings/access_key').set(newPass).then(() => {
-            showToast("Password successfully update ho gaya!");
+        const pass = document.getElementById('adminPassword').value.trim();
+        const t1 = document.getElementById('tgLink1').value.trim();
+        const t2 = document.getElementById('tgLink2').value.trim();
+        const t3 = document.getElementById('tgLink3').value.trim();
+        const url = document.getElementById('mainTargetUrl').value.trim();
+
+        db.ref('settings').set({
+            access_key: pass,
+            tg1: t1,
+            tg2: t2,
+            tg3: t3,
+            target_url: url
+        }).then(() => {
+            showToast("डेटाबेस में सब कुछ अपडेट हो गया!");
+        }).catch((error) => {
+            alert("त्रुटि: " + error.message);
         });
-    }
-
-    // Add or Update Link
-    function saveOrUpdateLink(e) {
-        e.preventDefault();
-        const editingId = document.getElementById('editingLinkId').value;
-        const title = document.getElementById('linkTitle').value.trim();
-        const url = document.getElementById('linkURL').value.trim();
-
-        if (editingId) {
-            // Update existing
-            db.ref('links/' + editingId).set({ title, url }).then(() => {
-                showToast("Link successfully edit ho gayi!");
-                resetLinkForm();
-            });
-        } else {
-            // Add new
-            const newRef = linksRef.push();
-            newRef.set({ title, url }).then(() => {
-                showToast("Nayi link add ho gayi!");
-                resetLinkForm();
-            });
-        }
-    }
-
-    function editLink(key, title, url) {
-        document.getElementById('editingLinkId').value = key;
-        document.getElementById('linkTitle').value = title;
-        document.getElementById('linkURL').value = url;
-        document.getElementById('submitLinkBtn').innerHTML = '<i class="fa-solid fa-pen"></i> <span>Link Update Karein</span>';
-    }
-
-    function deleteLink(key) {
-        if (confirm("Kya aap yeh link delete karna chahte hain?")) {
-            db.ref('links/' + key).remove().then(() => {
-                showToast("Link delete ho gayi!");
-            });
-        }
-    }
-
-    function resetLinkForm() {
-        document.getElementById('editingLinkId').value = '';
-        document.getElementById('linkTitle').value = '';
-        document.getElementById('linkURL').value = '';
-        document.getElementById('submitLinkBtn').innerHTML = '<i class="fa-solid fa-plus"></i> <span>Link Add Karein</span>';
     }
 
     function showToast(msg) {
