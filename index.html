@@ -101,13 +101,6 @@
             background-color: var(--accent-green);
             border-radius: 50%;
             box-shadow: 0 0 8px var(--accent-green);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.4; }
-            100% { opacity: 1; }
         }
 
         .shield-icon {
@@ -122,7 +115,6 @@
             margin: 0 auto 16px auto;
             font-size: 28px;
             color: var(--accent-red);
-            box-shadow: 0 10px 20px rgba(255, 59, 48, 0.15);
         }
 
         .title {
@@ -167,7 +159,6 @@
             text-transform: uppercase;
             margin-bottom: 6px;
             display: block;
-            letter-spacing: 0.5px;
         }
 
         .input-field-wrapper {
@@ -188,7 +179,7 @@
             background: rgba(0, 0, 0, 0.4);
             border: 1px solid var(--border-color);
             border-radius: 14px;
-            padding: 14px 44px 14px 44px;
+            padding: 14px 16px 14px 44px;
             color: #fff;
             font-size: 15px;
             outline: none;
@@ -198,16 +189,6 @@
         .custom-input:focus {
             border-color: var(--accent-orange);
             box-shadow: 0 0 0 3px rgba(255, 149, 0, 0.2);
-        }
-
-        .toggle-password {
-            position: absolute;
-            right: 16px;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 16px;
         }
 
         .btn-login {
@@ -225,81 +206,52 @@
             justify-content: center;
             gap: 8px;
             box-shadow: 0 8px 20px rgba(255, 59, 48, 0.3);
-            transition: transform 0.1s;
         }
 
-        .btn-login:active {
-            transform: scale(0.98);
-        }
-
-        /* Dashboard Panel (Hidden by default) */
+        /* Dashboard Panel */
         #dashboardPanel {
             display: none;
             text-align: left;
         }
 
-        .target-box {
-            background: rgba(0, 0, 0, 0.5);
+        .link-card-box {
+            background: rgba(0, 0, 0, 0.4);
             border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 20px;
-        }
-
-        .target-label {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--accent-orange);
-            text-transform: uppercase;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .target-url-display {
-            font-size: 13px;
-            color: #fff;
-            word-break: break-all;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            padding: 12px 14px;
             margin-bottom: 12px;
-            max-height: 80px;
-            overflow-y: auto;
-        }
-
-        .action-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             gap: 10px;
         }
 
-        .btn-action {
-            padding: 12px;
-            border-radius: 12px;
+        .link-info-text {
             font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            border: none;
-            text-decoration: none;
-            transition: opacity 0.2s;
-        }
-
-        .btn-copy {
-            background: rgba(255, 255, 255, 0.1);
             color: #fff;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
-        .btn-open {
+        .link-info-text b {
+            display: block;
+            font-size: 11px;
+            color: var(--accent-orange);
+            text-transform: uppercase;
+        }
+
+        .btn-visit {
             background: linear-gradient(135deg, #30d158, #28a745);
             color: #fff;
-            box-shadow: 0 4px 12px rgba(48, 209, 88, 0.2);
+            border: none;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            white-space: nowrap;
         }
 
         .footer-note {
@@ -343,9 +295,6 @@
                     <div class="input-field-wrapper">
                         <i class="fa-solid fa-key"></i>
                         <input type="password" id="accessPassword" class="custom-input" placeholder="पासवर्ड दर्ज करें..." required>
-                        <button type="button" class="toggle-password" onclick="togglePassVisibility()">
-                            <i class="fa-solid fa-eye" id="eyeIcon"></i>
-                        </button>
                     </div>
                 </div>
 
@@ -356,31 +305,19 @@
             </form>
         </div>
 
-        <!-- DASHBOARD SECTION (AFTER SUCCESSFUL LOGIN) -->
+        <!-- DASHBOARD SECTION (SHOWS ALL LINKS AFTER LOGIN) -->
         <div id="dashboardPanel">
-            <div class="shield-icon" style="color: var(--accent-green);">
+            <div class="shield-icon" style="color: var(--accent-green); background: rgba(48,209,88,0.1); border-color: rgba(48,209,88,0.2);">
                 <i class="fa-solid fa-circle-check"></i>
             </div>
             <div class="title">SUCCESS</div>
-            <div class="subtitle">Console Unlocked Successfully</div>
+            <div class="subtitle" style="margin-bottom: 16px;">All Links Loaded Successfully</div>
 
-            <div class="target-box">
-                <div class="target-label">
-                    <i class="fa-solid fa-link"></i> Saved Target Link
-                </div>
-                <div id="targetUrlText" class="target-url-display">लोड हो रहा है...</div>
-                
-                <div class="action-buttons">
-                    <button type="button" class="btn-action btn-copy" onclick="copyTargetLink()">
-                        <i class="fa-solid fa-copy"></i> कॉपी करें
-                    </button>
-                    <a id="openTargetBtn" href="#" target="_blank" class="btn-action btn-open">
-                        <i class="fa-solid fa-external-link-alt"></i> खोलें
-                    </a>
-                </div>
+            <div id="allLinksContainer" style="display: flex; flex-direction: column; gap: 10px; max-height: 260px; overflow-y: auto; margin-bottom: 16px;">
+                <div style="text-align: center; color: var(--text-muted); font-size: 13px;">लोड हो रहा है...</div>
             </div>
 
-            <button type="button" class="btn-action btn-copy" style="width: 100%; background: rgba(255,59,48,0.2); color: var(--accent-red);" onclick="location.reload()">
+            <button type="button" class="btn-login" style="background: rgba(255,59,48,0.2); color: var(--accent-red); border: 1px solid rgba(255,59,48,0.3); padding: 12px;" onclick="logout()">
                 <i class="fa-solid fa-right-from-bracket"></i> लॉग आउट करें
             </button>
         </div>
@@ -388,11 +325,11 @@
     </div>
 
     <div class="footer-note">
-        TRUST Admin Console • All connections are logged
+        TRUST Admin Console • Secure Access
     </div>
 </div>
 
-<!-- Firebase Realtime Database SDK (v8) -->
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
@@ -407,37 +344,35 @@
     const db = firebase.database();
 
     let correctPassword = "admin"; // Default backup password
-    let currentLiveTarget = "https://worldoff.netlify.app";
+    let allLinksData = {};
 
-    // Fetch live settings from Firebase instantly
+    // Fetch live settings and links from Firebase in real-time
     db.ref('settings').on('value', (snapshot) => {
         if (snapshot.exists()) {
             const data = snapshot.val();
             if (data.access_key) {
                 correctPassword = String(data.access_key).trim();
             }
-            if (data.target_url) {
-                currentLiveTarget = String(data.target_url).trim();
-                document.getElementById('targetUrlText').innerText = currentLiveTarget;
-                document.getElementById('openTargetBtn').href = currentLiveTarget;
-            }
+            
+            // Collect links
+            allLinksData = {
+                tg1: data.tg1 || '',
+                tg2: data.tg2 || '',
+                tg3: data.tg3 || '',
+                target_url: data.target_url || ''
+            };
+            
+            renderLinksList();
         }
     });
 
-    // Toggle Password Visibility
-    function togglePassVisibility() {
-        const passInput = document.getElementById('accessPassword');
-        const eyeIcon = document.getElementById('eyeIcon');
-        if (passInput.type === 'password') {
-            passInput.type = 'text';
-            eyeIcon.classList.remove('fa-eye');
-            eyeIcon.classList.add('fa-eye-slash');
-        } else {
-            passInput.type = 'password';
-            eyeIcon.classList.remove('fa-eye-slash');
-            eyeIcon.classList.add('fa-eye');
+    // Check if user was already logged in during this session
+    window.onload = function() {
+        if (sessionStorage.getItem('firedk_logged_in') === 'true') {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('dashboardPanel').style.display = 'block';
         }
-    }
+    };
 
     // Handle Login Verification
     function handleLogin(e) {
@@ -445,9 +380,9 @@
         const enteredPass = document.getElementById('accessPassword').value.trim();
         const errorBox = document.getElementById('errorBox');
 
-        // Check against dynamic Firebase password or default backup
         if (enteredPass === correctPassword) {
             errorBox.style.display = 'none';
+            sessionStorage.setItem('firedk_logged_in', 'true'); // Remember login for session
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('dashboardPanel').style.display = 'block';
         } else {
@@ -456,13 +391,43 @@
         }
     }
 
-    // Copy Link Function
-    function copyTargetLink() {
-        navigator.clipboard.writeText(currentLiveTarget).then(() => {
-            alert("लिंक सफलतापूर्वक कॉपी हो गई!");
-        }).catch(err => {
-            alert("कॉपी करने में विफल: " + err);
+    // Render links dynamically inside dashboard
+    function renderLinksList() {
+        const container = document.getElementById('allLinksContainer');
+        container.innerHTML = '';
+
+        const items = [
+            { label: 'Telegram Link 1', url: allLinksData.tg1 },
+            { label: 'Telegram Link 2', url: allLinksData.tg2 },
+            { label: 'Telegram Link 3', url: allLinksData.tg3 },
+            { label: 'Main Panel / Target URL', url: allLinksData.target_url }
+        ];
+
+        let hasAnyLink = false;
+        items.forEach(item => {
+            if (item.url) {
+                hasAnyLink = true;
+                const div = document.createElement('div');
+                div.className = 'link-card-box';
+                div.innerHTML = `
+                    <div class="link-info-text">
+                        <b>${item.label}</b>
+                        <span>${item.url}</span>
+                    </div>
+                    <a href="${item.url}" target="_blank" class="btn-visit">खोलें</a>
+                `;
+                container.appendChild(div);
+            }
         });
+
+        if (!hasAnyLink) {
+            container.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 13px;">कोई लिंक उपलब्ध नहीं है।</div>';
+        }
+    }
+
+    function logout() {
+        sessionStorage.removeItem('firedk_logged_in');
+        location.reload();
     }
 </script>
 
