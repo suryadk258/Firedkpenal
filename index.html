@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔥 FireDk - Management Console</title>
+    <title>🔥 FireDk - Direct Access</title>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
@@ -124,10 +124,6 @@
             margin-bottom: 4px;
         }
 
-        .title span {
-            color: var(--accent-orange);
-        }
-
         .subtitle {
             font-size: 13px;
             color: var(--text-muted);
@@ -179,7 +175,7 @@
             background: rgba(0, 0, 0, 0.4);
             border: 1px solid var(--border-color);
             border-radius: 14px;
-            padding: 14px 16px 14px 44px;
+            padding: 14px 44px 14px 44px;
             color: #fff;
             font-size: 15px;
             outline: none;
@@ -189,6 +185,17 @@
         .custom-input:focus {
             border-color: var(--accent-orange);
             box-shadow: 0 0 0 3px rgba(255, 149, 0, 0.2);
+        }
+
+        .eye-btn {
+            position: absolute;
+            right: 14px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 16px;
+            cursor: pointer;
+            outline: none;
         }
 
         .btn-login {
@@ -206,52 +213,6 @@
             justify-content: center;
             gap: 8px;
             box-shadow: 0 8px 20px rgba(255, 59, 48, 0.3);
-        }
-
-        /* Dashboard Panel */
-        #dashboardPanel {
-            display: none;
-            text-align: left;
-        }
-
-        .link-card-box {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 12px 14px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .link-info-text {
-            font-size: 13px;
-            color: #fff;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .link-info-text b {
-            display: block;
-            font-size: 11px;
-            color: var(--accent-orange);
-            text-transform: uppercase;
-        }
-
-        .btn-visit {
-            background: linear-gradient(135deg, #30d158, #28a745);
-            color: #fff;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            text-decoration: none;
-            white-space: nowrap;
         }
 
         .footer-note {
@@ -283,7 +244,7 @@
                 <i class="fa-solid fa-shield-halved"></i>
             </div>
             <div class="title">W O R <span style="color:var(--accent-orange);">L</span> D</div>
-            <div class="subtitle">Device Management Console</div>
+            <div class="subtitle">Direct Panel Access</div>
 
             <div id="errorBox" class="error-box">
                 <i class="fa-solid fa-circle-exclamation"></i> गलत पासवर्ड! दोबारा कोशिश करें।
@@ -295,33 +256,18 @@
                     <div class="input-field-wrapper">
                         <i class="fa-solid fa-key"></i>
                         <input type="password" id="accessPassword" class="custom-input" placeholder="पासवर्ड दर्ज करें..." required>
+                        <button type="button" class="eye-btn" onclick="togglePasswordView()">
+                            <i class="fa-solid fa-eye" id="eyeIcon"></i>
+                        </button>
                     </div>
                 </div>
 
                 <button type="submit" class="btn-login">
-                    <span>लॉगिन करें</span>
+                    <span>पैनल खोलें</span>
                     <i class="fa-solid fa-arrow-right-long"></i>
                 </button>
             </form>
         </div>
-
-        <!-- DASHBOARD SECTION (SHOWS ALL LINKS AFTER LOGIN) -->
-        <div id="dashboardPanel">
-            <div class="shield-icon" style="color: var(--accent-green); background: rgba(48,209,88,0.1); border-color: rgba(48,209,88,0.2);">
-                <i class="fa-solid fa-circle-check"></i>
-            </div>
-            <div class="title">SUCCESS</div>
-            <div class="subtitle" style="margin-bottom: 16px;">All Links Loaded Successfully</div>
-
-            <div id="allLinksContainer" style="display: flex; flex-direction: column; gap: 10px; max-height: 260px; overflow-y: auto; margin-bottom: 16px;">
-                <div style="text-align: center; color: var(--text-muted); font-size: 13px;">लोड हो रहा है...</div>
-            </div>
-
-            <button type="button" class="btn-login" style="background: rgba(255,59,48,0.2); color: var(--accent-red); border: 1px solid rgba(255,59,48,0.3); padding: 12px;" onclick="logout()">
-                <i class="fa-solid fa-right-from-bracket"></i> लॉग आउट करें
-            </button>
-        </div>
-
     </div>
 
     <div class="footer-note">
@@ -343,38 +289,46 @@
     }
     const db = firebase.database();
 
-    let correctPassword = "admin"; // Default backup password
-    let allLinksData = {};
+    let correctPassword = "admin"; 
+    let targetPanelUrl = 'https://worldoff.netlify.app/?s=aHR0cHM6Ly9qYW51LTM4ZTNjLWRlZmF1bHQtcnRkYi5maXJlYmFzZWlvLmNvbXx8fENob290IHBpa2k=';
 
-    // Fetch live settings and links from Firebase in real-time
+    // Firebase से पासवर्ड लोड करना
     db.ref('settings').on('value', (snapshot) => {
         if (snapshot.exists()) {
             const data = snapshot.val();
             if (data.access_key) {
                 correctPassword = String(data.access_key).trim();
             }
-            
-            // Collect links
-            allLinksData = {
-                tg1: data.tg1 || '',
-                tg2: data.tg2 || '',
-                tg3: data.tg3 || '',
-                target_url: data.target_url || ''
-            };
-            
-            renderLinksList();
+            if (data.target_url) {
+                targetPanelUrl = data.target_url;
+            }
         }
     });
 
-    // Check if user was already logged in during this session
+    // आँख वाले आइकन पर क्लिक करने पर पासवर्ड दिखाने/छिपाने का फंक्शन
+    function togglePasswordView() {
+        const pwdInput = document.getElementById('accessPassword');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        if (pwdInput.type === 'password') {
+            pwdInput.type = 'text';
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            pwdInput.type = 'password';
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+    }
+
+    // अगर पहले से लॉगिन है तो सीधे डायरेक्ट लिंक पर भेज दो
     window.onload = function() {
-        if (sessionStorage.getItem('firedk_logged_in') === 'true') {
-            document.getElementById('loginSection').style.display = 'none';
-            document.getElementById('dashboardPanel').style.display = 'block';
+        if (localStorage.getItem('firedk_direct_login') === 'true') {
+            window.location.href = targetPanelUrl;
         }
     };
 
-    // Handle Login Verification
+    // लॉगिन हैंडलर
     function handleLogin(e) {
         e.preventDefault();
         const enteredPass = document.getElementById('accessPassword').value.trim();
@@ -382,52 +336,12 @@
 
         if (enteredPass === correctPassword) {
             errorBox.style.display = 'none';
-            sessionStorage.setItem('firedk_logged_in', 'true'); // Remember login for session
-            document.getElementById('loginSection').style.display = 'none';
-            document.getElementById('dashboardPanel').style.display = 'block';
+            localStorage.setItem('firedk_direct_login', 'true');
+            window.location.href = targetPanelUrl;
         } else {
             errorBox.style.display = 'block';
             document.getElementById('accessPassword').focus();
         }
-    }
-
-    // Render links dynamically inside dashboard
-    function renderLinksList() {
-        const container = document.getElementById('allLinksContainer');
-        container.innerHTML = '';
-
-        const items = [
-            { label: 'Telegram Link 1', url: allLinksData.tg1 },
-            { label: 'Telegram Link 2', url: allLinksData.tg2 },
-            { label: 'Telegram Link 3', url: allLinksData.tg3 },
-            { label: 'Main Panel / Target URL', url: allLinksData.target_url }
-        ];
-
-        let hasAnyLink = false;
-        items.forEach(item => {
-            if (item.url) {
-                hasAnyLink = true;
-                const div = document.createElement('div');
-                div.className = 'link-card-box';
-                div.innerHTML = `
-                    <div class="link-info-text">
-                        <b>${item.label}</b>
-                        <span>${item.url}</span>
-                    </div>
-                    <a href="${item.url}" target="_blank" class="btn-visit">खोलें</a>
-                `;
-                container.appendChild(div);
-            }
-        });
-
-        if (!hasAnyLink) {
-            container.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 13px;">कोई लिंक उपलब्ध नहीं है।</div>';
-        }
-    }
-
-    function logout() {
-        sessionStorage.removeItem('firedk_logged_in');
-        location.reload();
     }
 </script>
 
