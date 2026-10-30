@@ -1,12 +1,14 @@
 import os
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
+from flask import Flask
+import threading
 
 # आपके बोट का टोकन
 TOKEN = "9243035074:AAFSVPL6FZ_r1VZ52SPsbmLsnWuKFXb1NtQ"
 bot = telebot.TeleBot(TOKEN)
 
-# आपके चारों चैनल्स (जो आपने शुरू में बताए थे)
+# आपके चारों चैनल्स
 CHANNELS = [
     "@kingsearning99",
     "@suryaearningtip",
@@ -15,6 +17,17 @@ CHANNELS = [
 ]
 
 WEB_APP_URL = "https://suryadk258.github.io/Firedkpenal/"
+
+# Render के पोर्ट एरर को रोकने के लिए छोटा सा वेब सर्वर
+app = Flask('')
+
+@app.route('/')
+def home():
+    return "Bot is active!"
+
+def run_web():
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host='0.0.0.0', port=port)
 
 def check_all_channels(user_id):
     for channel in CHANNELS:
@@ -69,4 +82,11 @@ def callback_query(call):
         except Exception:
             pass
 
-bot.infinity_polling()
+if __name__ == "__main__":
+    # बैकग्राउंड में वेब सर्वर चलाना ताकि Render का पोर्ट एरर न आए
+    t = threading.Thread(target=run_web)
+    t.start()
+    
+    # बोट को चालू रखना
+    bot.infinity_polling()
+    
