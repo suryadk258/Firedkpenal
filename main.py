@@ -29,37 +29,18 @@ async def check_all_subscriptions(bot, user_id: int) -> bool:
     return True
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user = update.effective_user
-    user_id = user.id
+    keyboard = []
+    for ch in REQUIRED_CHANNELS:
+        clean_name = ch.replace('@', '')
+        keyboard.append([InlineKeyboardButton(f"📢 Join {ch}", url=f"https://t.me/{clean_name}")])
     
-    all_joined = await check_all_subscriptions(context.bot, user_id)
-    
-    if not all_joined:
-        keyboard = []
-        for ch in REQUIRED_CHANNELS:
-            clean_name = ch.replace('@', '')
-            keyboard.append([InlineKeyboardButton(f"📢 Join {ch}", url=f"https://t.me/{clean_name}")])
-        
-        keyboard.append([InlineKeyboardButton("🔄 Verify & Open Index Panel", callback_data="check_join")])
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        
-        await update.message.reply_text(
-            f"⚠️ **अभिगम अस्वीकृत (Access Denied)!**\n\n"
-            f"भाई **{user.first_name}**, इंडेक्स पैनल खोलने के लिए आपको हमारे **सभी चैनल्स को ज्वाइन करना अनिवार्य है**।\n\n"
-            f"सारे चैनल ज्वाइन करने के बाद नीचे **'Verify & Open Index Panel'** पर क्लिक करें:",
-            reply_markup=reply_markup,
-            parse_mode="Markdown"
-        )
-        return
-
-    keyboard = [
-        [InlineKeyboardButton("🔥 Open Index Panel", url=INDEX_PANEL_URL)]
-    ]
+    keyboard.append([InlineKeyboardButton("🔄 Verify & Open Index Panel", callback_data="check_join")])
     reply_markup = InlineKeyboardMarkup(keyboard)
     
     await update.message.reply_text(
-        f"✅ **स्वागत है भाई {user.first_name}!**\n\n"
-        f"आपके सारे सब्सक्रिप्शन Verified हैं। नीचे दिए गए बटन से अपना **Index Panel** खोलें:",
+        "⚠️ **एक्सेस अस्वीकृत (Access Denied)!**\n\n"
+        "इंडेक्स पैनल खोलने के लिए आपको हमारे **सभी चैनल्स को ज्वाइन करना अनिवार्य है**।\n\n"
+        "सारे चैनल ज्वाइन करने के बाद नीचे **'Verify & Open Index Panel'** पर क्लिक करें:",
         reply_markup=reply_markup,
         parse_mode="Markdown"
     )
@@ -68,7 +49,6 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     user_id = query.from_user.id
-    user = query.from_user
 
     if query.data == "check_join":
         all_joined = await check_all_subscriptions(context.bot, user_id)
@@ -79,14 +59,14 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
             await query.edit_message_text(
-                f"🎉 **वेरिफिकेशन सफल!**\n\n"
-                f"धन्यवाद भाई {user.first_name}! अब आप नीचे दिए गए बटन से अपना **Index Panel** खोल सकते हैं:",
+                "🎉 **वेरिफिकेशन सफल!**\n\n"
+                "धन्यवाद! अब आप नीचे दिए गए बटन से अपना **Index Panel** खोल सकते हैं:",
                 reply_markup=reply_markup,
                 parse_mode="Markdown"
             )
         else:
             await query.answer(
-                "❌ आपने अभी तक सभी चैनल्स ज्वाइन नहीं किए हैं (या किसी चैनल को अनफॉलो कर दिया है)! पहले सभी ज्वाइन करें।",
+                "❌ कृपया पहले हमारे सभी चैनल्स ज्वाइन करें, तभी पैनल खुलेगा!",
                 show_alert=True
             )
 
