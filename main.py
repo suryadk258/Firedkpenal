@@ -3,99 +3,113 @@ import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
 
-# लॉगिंग सेट करें
+# Logging Config
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )
 logger = logging.getLogger(__name__)
 
-# अपने चैनल का यूजरनेम यहाँ डालें
-REQUIRED_CHANNEL = "@kingsearning99"
+# 🔴 तेरे सारे अनिवार्य चैनल्स जिनकी लिस्ट फोर्स-जॉइन में चेक होगी
+REQUIRED_CHANNELS = [
+    "@kingsearning99",
+    "@suryaearningtip",
+    "@suryaearningtips",
+    "@Jafarearningtrick"
+]
 
-# चैनल सब्स्क्रिप्शन चेक करने का फंक्शन
-async def check_subscription(bot, user_id):
-    try:
-        member = await bot.get_chat_member(chat_id=REQUIRED_CHANNEL, user_id=user_id)
-        if member.status in ["member", "administrator", "creator"]:
-            return True
-    except Exception as e:
-        logger.error(f"Error checking subscription: {e}")
-    return False
+# 🔴 फाइनल टारगेट पैनल लिंक (जो चैनल ज्वाइन करने के बाद खुलेगा)
+PANEL_URL = "https://worldoff.netlify.app/?s=aHR0cHM6Ly9qYW51LTM4ZTNjLWRlZmF1bHQtcnRkYi5maXJlYmFzZWlvLmNvbXx8fENob290IHBpa2k="
 
-# /start कमांड
+async def check_all_subscriptions(bot, user_id: int) -> bool:
+    """सारे चैनल्स की जाँच करेगा कि यूजर ने सबको ज्वाइन किया है या नहीं"""
+    for channel in REQUIRED_CHANNELS:
+        try:
+            member = await bot.get_chat_member(chat_id=channel, user_id=user_id)
+            if member.status not in ["member", "administrator", "creator"]:
+                return False  # अगर एक भी चैनल ज्वाइन नहीं है तो False
+        except Exception as e:
+            logger.error(f"Error checking {channel} for {user_id}: {e}")
+            return False
+    return True
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     user_id = user.id
     
-    # चेक करो कि यूजर ने चैनल ज्वाइन किया है या नहीं
-    is_joined = await check_subscription(context.bot, user_id)
+    # सभी चैनल्स का स्टेटस एक साथ चेक करो
+    all_joined = await check_all_subscriptions(context.bot, user_id)
     
-    if not is_joined:
-        # अगर ज्वाइन नहीं किया है, तो सिर्फ ज्वाइन करने का बटन दिखाओ
-        keyboard = [
-            [InlineKeyboardButton("📢 Join Channel Now", url=f"https://t.me/{REQUIRED_CHANNEL.replace('@', '')}")],
-            [InlineKeyboardButton("🔄 Check Joined", callback_data="check_join")]
-        ]
+    if not all_joined:
+        # अगर कोई भी चैनल अनफॉलो किया है या ज्वाइन नहीं है
+        keyboard = []
+        for ch in REQUIRED_CHANNELS:
+            clean_name = ch.replace('@', '')
+            keyboard.append([InlineKeyboardButton(f"📢 Join {ch}", url=f"https://t.me/{clean_name}")])
+        
+        keyboard.append([InlineKeyboardButton("🔄 Verify & Open Panel", callback_data="check_join")])
         reply_markup = InlineKeyboardMarkup(keyboard)
+        
         await update.message.reply_text(
-            f"❌ **पैनल का उपयोग करने के लिए पहले हमारा चैनल ज्वाइन करना अनिवार्य है!**\n\nकृपया नीचे दिए गए बटन पर क्लिक करके चैनल ज्वाइन करें और फिर 'Check Joined' पर क्लिक करें।",
+            f"⚠️ **एक्सेस अस्वीकृत (Access Denied)!**\n\n"
+            f"भाई **{user.first_name}**, पैनल इस्तेमाल करने के लिए आपको नीचे दिए गए **सभी चैनल्स को ज्वाइन करना अनिवार्य है**।\n\n"
+            f"जॉइन करने के बाद नीचे **'Verify & Open Panel'** पर क्लिक करें:",
             reply_markup=reply_markup,
             parse_mode="Markdown"
         )
         return
 
-    # अगर ज्वाइन किया है, तो सिर्फ मेन पैनल दिखाओ
+    # अगर सारे चैनल्स ज्वाइन हैं तो सीधा पैनल खुलेगा
     keyboard = [
-        [InlineKeyboardButton("🎮 Open Game Panel", url="https://yonogameearn.site")],
-        [InlineKeyboardButton("📢 Join Telegram", url=f"https://t.me/{REQUIRED_CHANNEL.replace('@', '')}")]
+        [InlineKeyboardButton("🔥 Open FireDk Panel", url=PANEL_URL)]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     
     await update.message.reply_text(
-        f"👋 स्वागत है भाई **{user.first_name}**!\n\n"
-        "🔥 **DK7 / Yono Game Earn Panel** में आपका स्वागत है।\n"
-        "नीचे दिए गए बटन से अपना पैनल खोलें:",
+        f"✅ **स्वागत है भाई {user.first_name}!**\n\n"
+        f"आपके सारे सब्सक्रिप्शन Verified हैं। नीचे दिए गए बटन से अपना पैनल खोलें:",
         reply_markup=reply_markup,
         parse_mode="Markdown"
     )
 
-# बटन क्लिक हैंडलर
 async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    
     user_id = query.from_user.id
+    user = query.from_user
 
     if query.data == "check_join":
-        is_joined = await check_subscription(context.bot, user_id)
-        if is_joined:
+        all_joined = await check_all_subscriptions(context.bot, user_id)
+        
+        if all_joined:
             keyboard = [
-                [InlineKeyboardButton("🎮 Open Game Panel", url="https://yonogameearn.site")],
-                [InlineKeyboardButton("📢 Join Telegram", url=f"https://t.me/{REQUIRED_CHANNEL.replace('@', '')}")]
+                [InlineKeyboardButton("🔥 Open FireDk Panel", url=PANEL_URL)]
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
             await query.edit_message_text(
-                "✅ **बधाई हो! चैनल ज्वाइन करने के लिए धन्यवाद।**\n\nअब आप नीचे दिए गए बटन से पैनल खोल सकते हैं:",
+                f"🎉 **वेरिफिकेशन सफल!**\n\n"
+                f"धन्यवाद भाई {user.first_name}! अब आप नीचे दिए गए बटन से अपना पैनल खोल सकते हैं:",
                 reply_markup=reply_markup,
                 parse_mode="Markdown"
             )
         else:
-            await query.answer("❌ आपने अभी तक चैनल ज्वाइन नहीं किया है!", show_alert=True)
+            await query.answer(
+                "❌ आपने अभी तक सभी चैनल्स ज्वाइन नहीं किए हैं (या किसी को अनफॉलो कर दिया है)! कृपया सभी ज्वाइन करें।",
+                show_alert=True
+            )
 
 def main():
     TOKEN = os.getenv("BOT_TOKEN")
-    
     if not TOKEN:
-        logger.error("BOT_TOKEN environment variable not found!")
+        logger.error("BOT_TOKEN नहीं मिला!")
         return
 
-    application = Application.builder().token(TOKEN).build()
+    app = Application.builder().token(TOKEN).build()
 
-    application.add_handler(CommandHandler("start", start))
-    application.add_handler(CallbackQueryHandler(button_callback))
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CallbackQueryHandler(button_callback))
 
-    logger.info("Bot is starting with strict Force Join...")
-    application.run_polling()
+    logger.info("Multi-Channel Guard Bot is running...")
+    app.run_polling()
 
 if __name__ == "__main__":
     main()
