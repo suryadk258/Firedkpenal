@@ -13,7 +13,6 @@ REQUIRED_CHANNELS = [
     "@kingsearning99",
     "@suryaearningtip",
     "@suryaearningtips",
-    "@Jafarearningtrick"
 ]
 
 INDEX_PANEL_URL = "https://allyonogameearn.github.io"
