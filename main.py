@@ -1,7 +1,7 @@
 import os
 import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ContextTypes
+from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
 
 # Logging Config
 logging.basicConfig(
@@ -9,16 +9,14 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# अब इसमें सिर्फ ये 3 चैनल्स रहेंगे (Jafar को हटा दिया गया है)
 REQUIRED_CHANNELS = [
     "@kingsearning99",
     "@suryaearningtip",
     "@suryaearningtips"
 ]
 
-INDEX_PANEL_URL = "https://worldoff.netlify.app/?s=aHR0cHM6Ly9qYW51LTM4ZTNjLWRlZmF1bHQtcnRkYi5maXJlYmFzZWlvLmNvbXx8fENob290IHBpa2k="
-
-# 👉 भविष्य में कभी पासवर्ड बदलना हो, तो यहाँ बदल सकते हैं
-CORRECT_KEY = "SURYA123"
+INDEX_PANEL_URL = "https://suryadk258.github.io/Firedkpenal/"
 
 async def check_user_membership(bot, user_id: int) -> bool:
     for channel in REQUIRED_CHANNELS:
@@ -37,9 +35,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     all_joined = await check_user_membership(context.bot, user_id)
     
     if all_joined:
+        keyboard = [
+            [InlineKeyboardButton("🔥 Open Index Panel", url=INDEX_PANEL_URL)]
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
         await update.message.reply_text(
-            "✅ आपके सभी चैनल्स Verified हैं!\n\n"
-            "पैनल खोलने के लिए कृपया अपनी **Key (पासवर्ड)** भेजें (उदाहरण के लिए लिखें: `/key SURYA123`)"
+            "✅ आपके सभी चैनल्स Verified हैं! नीचे दिए गए बटन से अपना पैनल खोलें:",
+            reply_markup=reply_markup
         )
     else:
         keyboard = []
@@ -47,12 +49,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             clean_name = ch.replace('@', '')
             keyboard.append([InlineKeyboardButton(f"📢 Join {ch}", url=f"https://t.me/{clean_name}")])
         
-        keyboard.append([InlineKeyboardButton("🔄 Verify & Continue", callback_data="check_join")])
+        keyboard.append([InlineKeyboardButton("🔄 Verify & Open Panel", callback_data="check_join")])
         reply_markup = InlineKeyboardMarkup(keyboard)
         
         await update.message.reply_text(
             "⚠️ **एक्सेस अस्वीकृत (Access Denied)!**\n\n"
-            "आगे बढ़ने के लिए पहले हमारे **सभी चैनल्स को ज्वाइन करें** और फिर नीचे **'Verify & Continue'** पर क्लिक करें:",
+            "पैनल का बटन तभी खुलेगा जब आप नीचे दिए गए **सभी चैनल्स को ज्वाइन कर लेंगे**।\n\n"
+            "सारे चैनल ज्वाइन करने के बाद नीचे **'Verify & Open Panel'** पर क्लिक करें:",
             reply_markup=reply_markup
         )
 
@@ -65,41 +68,20 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         all_joined = await check_user_membership(context.bot, user_id)
         
         if all_joined:
-            await query.edit_message_text(
-                "🎉 **वेरिफिकेशन सफल!**\n\n"
-                "अब पैनल खोलने के लिए अपनी **Key (पासवर्ड)** भेजें (लिखकर भेजें: `/key SURYA123`)"
-            )
-        else:
-            await query.answer(
-                "❌ कृपया पहले सभी चैनल्स ज्वाइन करें!",
-                show_alert=True
-            )
-
-async def key_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    
-    # पहले चेक करें कि यूजर ने चैनल ज्वाइन किए हैं या नहीं
-    all_joined = await check_user_membership(context.bot, user_id)
-    if not all_joined:
-        await update.message.reply_text("❌ पहले हमारे सभी चैनल्स ज्वाइन करें, फिर की (Key) डालें!")
-        return
-
-    # यूजर द्वारा भेजी गई की चेक करें
-    if context.args:
-        user_key = context.args[0]
-        if user_key == CORRECT_KEY:
             keyboard = [
-                [InlineKeyboardButton("🔥 Open Panel Now", url=INDEX_PANEL_URL)]
+                [InlineKeyboardButton("🔥 Open Index Panel", url=INDEX_PANEL_URL)]
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
-            await update.message.reply_text(
-                "✅ **Key बिल्कुल सही है!**\n\nनीचे दिए गए बटन से अपना पैनल खोलें:",
+            await query.edit_message_text(
+                "🎉 **वेरिफिकेशन सफल!**\n\n"
+                "धन्यवाद! अब आप नीचे दिए गए बटन से अपना पैनल खोल सकते हैं:",
                 reply_markup=reply_markup
             )
         else:
-            await update.message.reply_text("❌ गलत Key है! कृपया सही Key दर्ज करें (जैसे: `/key SURYA123`)")
-    else:
-            await update.message.reply_text("⚠️ कृपया सही फॉर्मेट में Key भेजें, जैसे: `/key SURYA123`")
+            await query.answer(
+                "❌ आपने अभी तक सभी चैनल्स ज्वाइन नहीं किए हैं! कृपया पहले सभी ज्वाइन करें तभी पैनल खुलेगा।",
+                show_alert=True
+            )
 
 def main():
     TOKEN = os.getenv("BOT_TOKEN")
@@ -111,9 +93,8 @@ def main():
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(button_callback))
-    app.add_handler(CommandHandler("key", key_command))
 
-    logger.info("Bot is running...")
+    logger.info("Guard Bot is running...")
     app.run_polling()
 
 if __name__ == "__main__":
