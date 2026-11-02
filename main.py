@@ -9,14 +9,16 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# अब इसमें सिर्फ ये 3 चैनल्स रहेंगे (Jafar को हटा दिया गया है)
+# आवश्यक चैनल्स की लिस्ट
 REQUIRED_CHANNELS = [
     "@kingsearning99",
     "@suryaearningtip",
     "@suryaearningtips"
 ]
 
+# तेरा GitHub वाला गेटवे पेज लिंक
 INDEX_PANEL_URL = "https://suryadk258.github.io/Firedkpenal/"
+CORRECT_KEY = "SURYA123"
 
 async def check_user_membership(bot, user_id: int) -> bool:
     for channel in REQUIRED_CHANNELS:
